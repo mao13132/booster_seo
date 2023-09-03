@@ -71,6 +71,25 @@ class ConnectGoogleCore:
 
         return True
 
+    def write_in_cell(self, name_sheet, row, columns, data_):
+
+        try:
+
+            worksheet = self.sheet.worksheet(name_sheet)
+
+            worksheet.update_cell(row, columns, data_)
+
+        except Exception as es:
+            msg = f'{NAME_SERVER} Ошибка write_in_cell: "{es}"'
+
+            print(msg)
+
+            SendlerOneCreate('').save_text(msg)
+
+            return False
+
+        return True
+
     def get_data_by_range(self, name_sheet, range_):
 
         worksheet = self.sheet.worksheet(name_sheet)
