@@ -1,3 +1,4 @@
+
 class GetProfile:
     def __init__(self, google_alternate):
         self.google_alternate = google_alternate
@@ -7,7 +8,6 @@ class GetProfile:
         self.job_status = 'active'
 
     def get_active_profile(self, list_profiles):
-        dooble_list = []
 
         good_list = []
 

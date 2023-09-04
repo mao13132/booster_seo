@@ -1,12 +1,13 @@
 from src.booster.get_profile import GetProfile
 from src.booster.get_requests import GetRequests
+from src.booster.iter_job import IterJob
 from src.telegram_debug import SendlerOneCreate
 
 
 class BoosterStart:
-    def __init__(self, google_alternate, driver):
+    def __init__(self, google_alternate, dir_project):
         self.google_alternate = google_alternate
-        self.driver = driver
+        self.dir_project = dir_project
 
     def booster_start(self):
         list_requests = GetRequests(self.google_alternate).get_job_requests()
@@ -24,6 +25,9 @@ class BoosterStart:
         if list_profile == []:
             SendlerOneCreate('').save_text('Нет профилей для работы')
             return []
+
+        res_iter_job = IterJob(self.google_alternate, list_requests,
+                               list_profile, self.dir_project).start_iter_job()
 
         print()
 
