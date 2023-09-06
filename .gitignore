@@ -6,3 +6,5 @@ __pycache__/
 telegram_debug.py
 src/google/keys/
 src/.env
+src/android/SAMSUNG_USB_Driver_for_Mobile_Phones.exe
+src/android/adb.exe

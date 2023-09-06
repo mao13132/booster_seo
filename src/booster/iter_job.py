@@ -4,11 +4,12 @@ from src.yandex.yandex_start_search import YandexFarmSearch
 
 
 class IterJob:
-    def __init__(self, google_alternate, list_requests, list_profile, dir_project):
+    def __init__(self, google_alternate, list_requests, list_profile, dir_project, android_phone):
         self.google_alternate = google_alternate
         self.list_requests = list_requests
         self.list_profile = list_profile
         self.dir_project = dir_project
+        self.android_phone = android_phone
 
     def start_profile(self, name_profile, user_agent):
 
@@ -77,7 +78,8 @@ class IterJob:
                     continue
 
             finally:
-                print(f'перезагрузка прокси')
+                self.android_phone.start_reboot_ip()
+
                 browser.driver.quit()
 
             print()

@@ -7,9 +7,10 @@ from src.telegram_debug import SendlerOneCreate
 
 
 class BoosterStart:
-    def __init__(self, google_alternate, dir_project):
+    def __init__(self, google_alternate, dir_project, android_phone):
         self.google_alternate = google_alternate
         self.dir_project = dir_project
+        self.android_phone = android_phone
 
     def booster_start(self):
         list_requests = GetRequests(self.google_alternate).get_job_requests()
@@ -32,7 +33,7 @@ class BoosterStart:
             return []
 
         res_iter_job = IterJob(self.google_alternate, list_requests,
-                               list_profile, self.dir_project).start_iter_job()
+                               list_profile, self.dir_project, self.android_phone).start_iter_job()
 
         print()
 
