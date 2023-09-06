@@ -9,8 +9,6 @@ from src.google.google_core import ConnectGoogleCore
 def main():
     dir_project = os.getcwd()
 
-
-
     android_phone = android_core_one_step()
 
     google_alternate = ConnectGoogleCore()

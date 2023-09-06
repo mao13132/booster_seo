@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 from ppadb.client import Client as AdbClient
 import os
@@ -25,7 +26,8 @@ class Check_emul:
 
     def check_emul(self):
 
-        print(f'Android: Начинаю подключение к телефону')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+              f'Android: Начинаю подключение к телефону')
 
         for _try in range(5):
 

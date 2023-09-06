@@ -1,20 +1,31 @@
+from src.altastroy.choice_shab import CoiceShab
+
 from src.browser.createbrowser import CreatBrowser
+
 from src.telegram_debug import SendlerOneCreate
+
 from src.yandex.yandex_start_search import YandexFarmSearch
 
 
 class IterJob:
     def __init__(self, google_alternate, list_requests, list_profile, dir_project, android_phone):
+
         self.google_alternate = google_alternate
+
         self.list_requests = list_requests
+
         self.list_profile = list_profile
+
         self.dir_project = dir_project
+
         self.android_phone = android_phone
 
     def start_profile(self, name_profile, user_agent):
 
         try:
+
             browser = CreatBrowser(self.dir_project, name_profile, user_agent)
+
         except Exception as es:
 
             print(f'Ошибка при создание браузера "{name_profile}" "{user_agent}" "{es}"')
@@ -23,15 +34,43 @@ class IterJob:
 
         return browser
 
+    def write_value_by_google(self, _request, browser_profile):
+
+        total_click = _request['complete_click'] + 1
+
+        row_ = _request['row'] + 2
+
+        columns_ = 3
+
+        res_write = self.google_alternate.write_in_cell(_request['name_sheet'], row_, columns_, total_click)
+
+        browser_profile['complete_click'] = browser_profile['complete_click'] + 1
+
+        if browser_profile['complete_click'] < browser_profile['max_click']:
+            self.list_profile.append(browser_profile)
+
+        row_ = browser_profile['row'] + 2
+
+        columns_ = 3
+
+        res_write = self.google_alternate.write_in_cell(browser_profile['name_sheet'], row_, columns_,
+                                                        browser_profile['complete_click'])
+
+        return True
+
     def _iter_requests(self):
         """Итерирую полученные запросы, выбираю браузерный профиль и создаю браузер"""
 
         for _request in self.list_requests:
 
             try:
+
                 browser_profile = self.list_profile.pop(0)
+
             except Exception as es:
+
                 SendlerOneCreate('').save_text(f'Кончились профили для обработки запросов')
+
                 return False
 
             target_request = _request['request']
@@ -51,44 +90,24 @@ class IterJob:
                                             self.google_alternate, _request).start_job_search_target_site()
 
                 if res_farm:
-                    total_click = _request['complete_click'] + 1
 
-                    row_ = _request['row'] + 2
+                    res_write = self.write_value_by_google(_request, browser_profile)
 
-                    columns_ = 3
-
-                    res_write = self.google_alternate.write_in_cell(_request['name_sheet'], row_, columns_, total_click)
-
-                    total_click = browser_profile['complete_click'] + 1
-
-                    if total_click < browser_profile['max_click']:
-                        self.list_profile.append(browser_profile)
-
-                    row_ = _request['row'] + 1
-
-                    columns_ = 3
-
-                    res_write = self.google_alternate.write_in_cell(browser_profile['name_sheet'], row_, columns_,
-                                                                    total_click)
-
-                    print(f'Запуск шаблона по фарму')
-
+                    CoiceShab(browser.driver).start_choice()
 
                 else:
                     continue
 
             finally:
-                self.android_phone.start_reboot_ip()
 
                 browser.driver.quit()
 
-            print()
+                self.android_phone.start_reboot_ip()
 
         return True
 
     def start_iter_job(self):
-        res_iter_requests = self._iter_requests()
 
-        print()
+        res_iter_requests = self._iter_requests()
 
         return res_iter_requests

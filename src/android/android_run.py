@@ -20,7 +20,7 @@ class Connect_phone:
 
     def start_reboot_ip(self):
 
-        print(f'Android: смена IP')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: смена IP')
 
         if not self.check_lock():
 
@@ -30,7 +30,7 @@ class Connect_phone:
 
 
         if not Reboot_ip(self).reboot_ip():
-            print(f'Android: Не смог сменить IP останавливаю')
+            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: Не смог сменить IP останавливаю')
             return False
 
         return True

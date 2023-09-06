@@ -17,3 +17,12 @@ class Scroll:
         asyncio.run(Stoper().stoper(0.2))
         self.driver.execute_script(
             f"window.scrollTo(0, window.scrollY {self._temp_storona} {random.choice(self._list_scroll)})")
+
+    def set_scroll_range(self, _count):
+
+        for _try in range(_count):
+
+            self._temp_storona = random.choice(self.storona)
+            self.driver.execute_script(
+                f"window.scrollTo(0, window.scrollY {self._temp_storona} {random.choice(self._list_scroll)})")
+            asyncio.run(Stoper().stoper(0.2))

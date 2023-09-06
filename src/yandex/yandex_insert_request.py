@@ -86,9 +86,13 @@ class YandexInsertRequest:
         count_try = 2
 
         while True:
+
             count += 1
+
             if count > count_try:
-                print(f'Не обнаружен запрос "{_request}"')
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                      f'Не обнаружен запрос "{_request}')
+
                 return False
 
             value_search = self.check_form_search()

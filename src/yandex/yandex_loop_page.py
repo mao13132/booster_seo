@@ -55,8 +55,9 @@ class YandexLoopPage:
                 continue
 
             if rows_yandex == []:
-                if self.captcha_core.check_captcha():
-                    continue
+                self.captcha_core.check_captcha()
+                time.sleep(1)
+                continue
 
             return rows_yandex
 
@@ -249,7 +250,7 @@ class YandexLoopPage:
 
         print(f'Все страницы обошёл')
 
-        return True
+        return False
 
     def tab_switch(self):
 
@@ -271,8 +272,6 @@ class YandexLoopPage:
 
     def start_loop_page(self):
         res_loop = self.loop_page_farm_yandex()
-
-        print(f'Здесь переключение вкладок')
 
         if res_loop:
             self.tab_switch()
