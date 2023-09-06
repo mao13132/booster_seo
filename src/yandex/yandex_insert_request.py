@@ -1,7 +1,8 @@
 import asyncio
+import random
+import time
 from datetime import datetime
 
-from src.yandex.captcha_core import CoreCaptcha
 from src.yandex.stoper import Stoper
 
 from selenium.webdriver.common.by import By
@@ -12,6 +13,7 @@ from selenium.webdriver.common.keys import Keys
 class YandexInsertRequest:
     def __init__(self, driver):
         self.driver = driver
+        self.count_write_wait = [0.1, 0.2, 1.3]
 
     def check_form_search(self):
         try:
@@ -28,13 +30,49 @@ class YandexInsertRequest:
         for x in range(count):
             try:
                 self.driver.find_element(by=By.XPATH,
-                                 value=f"//input[contains(@class, 'Form-Input')]").send_keys(Keys.BACKSPACE)
+                                         value=f"//input[contains(@class, 'Form-Input')]").send_keys(Keys.BACKSPACE)
             except:
                 continue
 
         return True
 
+    def get_goog_search_element(self):
+        try:
+            elem = self.driver.find_element(by=By.XPATH, value=f"//form//input[contains(@class, 'input')]")
+
+            return elem
+        except:
+            pass
+
+        try:
+            elem = self.driver.find_element(by=By.XPATH,
+                                            value=f"//form//*[contains(@class, 'HeaderP')]/textarea")
+
+            return elem
+        except:
+            pass
+
+        return False
+
+    def insert_request_to_search(self, _request):
+
+        element_search = self.get_goog_search_element()
+
+        if not element_search:
+            return False
+
+        time.sleep(1)
+
+        for simbol in _request:
+            element_search.send_keys(simbol)
+            asyncio.run(Stoper().stoper(random.choices(self.count_write_wait)[0]))
+
+        element_search.send_keys(Keys.ENTER)
+
+        return True
+
     def loop_insert_search(self, _request):
+
         try:
             _request = _request.strip()
         except:
@@ -58,7 +96,7 @@ class YandexInsertRequest:
                 if get_len > 0:
                     self.loop_clear(get_len)
 
-                res_insert_req = self.insert_quiest_search(row, request)
+                res_insert_req = self.insert_request_to_search(_request)
 
                 if count > 1:
                     time.sleep(1)

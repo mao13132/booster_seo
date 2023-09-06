@@ -5,12 +5,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from src.yandex.new_captcha import NewCaptcha
+
 
 class LoadPage:
-    def __init__(self, driver, url):
+    def __init__(self, driver, url, dir_project):
         self.url = url
         self.driver = driver
         self.source_name = 'Yandex'
+        self.captcha_core = NewCaptcha(self.driver, dir_project)
+        self.dir_project = dir_project
 
     def load_page(self, url):
         try:
@@ -38,7 +42,7 @@ class LoadPage:
             count += 1
 
             if count >= count_ower:
-                print(f'Не смог открыть {self.source_name}')
+                print(f'Не смог открыть {self.source_name} проверьте прокси')
                 return False
 
             start_page = self.load_page(self.url)
@@ -50,7 +54,11 @@ class LoadPage:
             check_page = self.__check_load_page(_xpatch)
 
             if not check_page:
+
+                self.captcha_core.check_captcha()
+
                 self.driver.refresh()
+
                 continue
 
             return True

@@ -2,7 +2,6 @@ import os
 from datetime import datetime
 
 from src.booster.booster_start import BoosterStart
-from src.browser.createbrowser_uc import CreatBrowser
 from src.google.google_core import ConnectGoogleCore
 
 

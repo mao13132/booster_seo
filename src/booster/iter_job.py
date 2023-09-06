@@ -1,6 +1,6 @@
-from src.browser.createbrowser_uc import CreatBrowser
+from src.browser.createbrowser import CreatBrowser
 from src.telegram_debug import SendlerOneCreate
-from src.yandex.yandex_farm_search import YandexFarmSearch
+from src.yandex.yandex_start_search import YandexFarmSearch
 
 
 class IterJob:
@@ -46,9 +46,15 @@ class IterJob:
 
             try:
 
-                res_farm = YandexFarmSearch(browser.driver, name_profile, target_request).start_job_search_target_site()
+                res_farm = YandexFarmSearch(browser.driver, name_profile, target_request, self.dir_project).start_job_search_target_site()
+
+                if res_farm:
+                    print(f'Запуск шаблона по фарму')
+                else:
+                    continue
 
             finally:
+                print(f'перезагрузка прокси')
                 browser.driver.quit()
 
             print()

@@ -13,3 +13,17 @@ ID_SHEET = os.getenv('ID_SHEET')
 NAME_SERVER = 'server_ip'
 
 MAX_CLICK_ONE_ACCOUNT = 5
+
+MAX_COUNT_PAGE = 10
+
+PROXY_HOST = '192.168.0.100'
+
+PROXY_PORT = 8082
+
+PROXY_USER = 'admin'
+
+PROXY_PASS = '123123'
+
+LINK_RELOAD = 'http://176.9.113.111:20005/?command=switch&api_key=gNMLTBja2JNqnZWZPcvi&m_key=RBsxNJGh3A&port=21431'
+
+CAPTCHA_TOKEN = os.getenv('CAPTCHA_TOKEN')
