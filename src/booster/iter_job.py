@@ -30,8 +30,8 @@ class IterJob:
             try:
                 browser_profile = self.list_profile.pop(0)
             except Exception as es:
-                SendlerOneCreate('').save_text(f'Кончились профили для обработки запросов "{es}"')
-                continue
+                SendlerOneCreate('').save_text(f'Кончились профили для обработки запросов')
+                return False
 
             target_request = _request['request']
 
@@ -47,13 +47,32 @@ class IterJob:
             try:
 
                 res_farm = YandexFarmSearch(browser.driver, name_profile, target_request, self.dir_project,
-                                            self.google_alternate).start_job_search_target_site()
+                                            self.google_alternate, _request).start_job_search_target_site()
 
                 if res_farm:
                     total_click = _request['complete_click'] + 1
 
+                    row_ = _request['row'] + 2
+
+                    columns_ = 3
+
+                    res_write = self.google_alternate.write_in_cell(_request['name_sheet'], row_, columns_, total_click)
+
+                    total_click = browser_profile['complete_click'] + 1
+
+                    if total_click < browser_profile['max_click']:
+                        self.list_profile.append(browser_profile)
+
+                    row_ = _request['row'] + 1
+
+                    columns_ = 3
+
+                    res_write = self.google_alternate.write_in_cell(browser_profile['name_sheet'], row_, columns_,
+                                                                    total_click)
+
                     print(f'Запуск шаблона по фарму')
-                    self.google_alternate.write_in_cell(_request['name_sheet'], _request['row'], 2, total_click)
+
+
                 else:
                     continue
 
@@ -69,3 +88,5 @@ class IterJob:
         res_iter_requests = self._iter_requests()
 
         print()
+
+        return res_iter_requests

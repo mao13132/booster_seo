@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 
 from selenium.webdriver.common.keys import Keys
 
+from src.yandex.yandex_check_modal import YandexCheckModal
+
 
 class YandexInsertRequest:
     def __init__(self, driver):
@@ -66,6 +68,8 @@ class YandexInsertRequest:
         for simbol in _request:
             element_search.send_keys(simbol)
             asyncio.run(Stoper().stoper(random.choices(self.count_write_wait)[0]))
+
+        res_modal = YandexCheckModal(self.driver).start_check_modal()
 
         element_search.send_keys(Keys.ENTER)
 

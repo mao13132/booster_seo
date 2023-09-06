@@ -7,11 +7,23 @@ class YandexCheckModal:
 
     def _check_modal(self):
         try:
-            modal = self.driver.find_element(by=By.XPATH, value=f"//*[contains(@class, 'DeclineButtonOuter')]")
-        except:
-            return False
 
-        return True
+            modal = self.driver.find_element(by=By.XPATH, value=f"//*[contains(@class, 'DeclineButtonOuter')]").click()
+
+            return True
+
+        except:
+            pass
+        try:
+
+            modal = self.driver.find_element(by=By.XPATH, value=f"//*[contains(@class, 'Modal-Content')]/button").click()
+
+            return True
+
+        except:
+            pass
+
+        return False
 
     def close_modal(self):
         try:
@@ -26,9 +38,4 @@ class YandexCheckModal:
 
         res_modal = self._check_modal()
 
-        if not res_modal:
-            return True
-
-        res_close = self.close_modal()
-
-        return res_close
+        return res_modal

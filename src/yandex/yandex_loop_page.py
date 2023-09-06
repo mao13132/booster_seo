@@ -1,6 +1,7 @@
 import asyncio
 import random
 import time
+from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
@@ -11,7 +12,7 @@ from src.yandex.stoper import Stoper
 
 
 class YandexLoopPage:
-    def __init__(self, driver, target_request, dir_project, google_alternate, name_profile):
+    def __init__(self, driver, target_request, dir_project, google_alternate, name_profile, _request):
 
         self.driver = driver
 
@@ -32,6 +33,8 @@ class YandexLoopPage:
         self.google_alternate = google_alternate
 
         self.name_profile = name_profile
+
+        self._request = _request
 
     def get_rows(self):
 
@@ -107,6 +110,21 @@ class YandexLoopPage:
 
         return False
 
+    def write_new_value_sheet(self, count_page_, count_row_):
+        row_ = self._request['row'] + 2
+
+        columns_ = 4
+
+        res_write = self.google_alternate.write_in_cell(self._request['name_sheet'], row_, columns_, count_page_)
+
+        time.sleep(1)
+
+        columns_ = 5
+
+        res_write = self.google_alternate.write_in_cell(self._request['name_sheet'], row_, columns_, count_row_)
+
+        return res_write
+
     def loop_rows(self, list_rows, count_page_):
 
         """Здесь идёт проверка всех строчек на целевой сайт и слово РЕКЛАМА"""
@@ -125,8 +143,11 @@ class YandexLoopPage:
                 if 'еклама' in value.text:
                     continue
 
-                print(f'Найден целевой сайт по запросу: "{self.target_request}" на {count_page_} '
-                      f'страницы на {count_row_} строке')
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                      f'BoosterSeo: Найден целевой сайт по запросу: "{self.target_request}" на {count_page_} '
+                      f'страницы и {count_row_} строке')
+
+                res_write = self.write_new_value_sheet(count_page_, count_row_)
 
                 res_open = self.open_target_site(value)
 
@@ -185,13 +206,15 @@ class YandexLoopPage:
 
             count_page_ = count_page + 1
 
-            print(f'Ищу сайт "{self.site}" на {count_page_} странице yandex')
+            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                  f'Ищу сайт "{self.site}" на {count_page_} странице yandex')
 
             # Получаю строки
             list_rows = self.get_rows()
 
             if not list_rows or list_rows == []:
-                print(f'Не смог получить поисковые строчки. Проверьте user agent "{self.name_profile}"')
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                      f'Не смог получить поисковые строчки. Проверьте user agent "{self.name_profile}"')
                 return False
 
             # Цикл где каждую строчку проверяю на целевой сайт и рекламу
@@ -202,7 +225,8 @@ class YandexLoopPage:
             if job_link:
                 return job_link
 
-            print(f'Целевой сайт на странице {count_page_} не обнаружен')
+            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                  f'BoosterSeo: Целевой сайт на странице {count_page_} не обнаружен')
 
             # Вычисляю сколько мне надо крутить в низ страницу
             count_scroll = len(list_rows) // 2
@@ -217,10 +241,9 @@ class YandexLoopPage:
             res_paginator = self.paginator(count_page_)
 
             if not res_paginator:
-                print(f'закончились страницы. Не смог переключить страницу, возможно такой вид дизайна')
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                      f'закончились страницы. Не смог переключить страницу, возможно такой вид дизайна')
                 return False
-
-            print(f'Переключил на #{count_page_ + 1} следующую поисковую страницу')
 
             asyncio.run(Stoper().stoper(random.choices(self.time_lists)[0]))
 
@@ -234,7 +257,11 @@ class YandexLoopPage:
 
         try:
             # TODO при US 2 вкладка, если другой браузер смотреть дополнительно
-            self.driver.switch_to.window(self.driver.window_handles[2])
+            try:
+                self.driver.switch_to.window(self.driver.window_handles[0])
+            except Exception as es:
+                print(f'Ошибка при переключение второго окна "{es}"')
+                return False
 
             return True
 

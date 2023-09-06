@@ -50,9 +50,7 @@ class NewCaptcha:
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Captcha Checker: Обнаружена капча')
             return True
         except:
-            print(
-                f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Captcha Checker:  Не вижу кнопки на которую надо нажать - игнорю')
-            return False
+            return True
 
     def click_captcha_one_windows(self):
         try:
@@ -62,9 +60,8 @@ class NewCaptcha:
             return True
 
         except:
-            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Captcha Checker: Не смог нажать кнопку на капче')
 
-        return False
+            return True
 
     def check_good_click(self):
         count = 0
@@ -88,10 +85,8 @@ class NewCaptcha:
 
     def one_step_click(self):
         if self._check_click():
-
             # Кликаю по запуску для генерации каптчи если требуется
-            if not self.click_captcha_one_windows():
-                return False
+            self.click_captcha_one_windows()
 
             res_load = self.check_good_click()
 

@@ -15,7 +15,7 @@ def main():
     print()
 
 
-print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} начал работу')
+print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: начал работу')
 
 if __name__ == '__main__':
     main()

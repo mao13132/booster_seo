@@ -19,10 +19,10 @@ from src.yandex.yandex_loop_page import YandexLoopPage
 
 
 class YandexFarmSearch:
-    def __init__(self, driver, name_profile, target_request, dir_project, google_alternate):
+    def __init__(self, driver, name_profile, target_request, dir_project, google_alternate, _request):
         self.driver = driver
 
-        self.msg = f'Аккаунт: "{name_profile}"'
+        self.msg = f'BoosterSeo: "{name_profile}"'
 
         self.url = 'https://yandex.ru/search'
 
@@ -36,6 +36,8 @@ class YandexFarmSearch:
 
         self.name_profile = name_profile
 
+        self._request = _request
+
     def write_request(self):
 
         count = 0
@@ -47,7 +49,8 @@ class YandexFarmSearch:
                 SendlerOneCreate('').save_text(f'Израсходовал все попытки ввести запрос "{self.target_request}"')
                 return False
 
-            print(f'{self.msg} Начинаю обработку ключевика "{self.target_request}"')
+            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                  f'{self.msg} Начинаю обработку ключевика "{self.target_request}"')
 
             res_insert_request = YandexInsertRequest(self.driver).loop_insert_search(self.target_request)
 
@@ -60,7 +63,7 @@ class YandexFarmSearch:
 
     def start_job_search_target_site(self):
 
-        print(f'{self.msg} Открываю yandex')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {self.msg} Открываю yandex')
 
         res_load = LoadPage(self.driver, self.url, self.dir_project).loop_load_page("//*[contains(text(), 'Яндекс')]")
 
@@ -75,6 +78,6 @@ class YandexFarmSearch:
             return False
 
         res_search_site = YandexLoopPage(self.driver, self.target_request, self.dir_project,
-                                         self.google_alternate, self.name_profile).start_loop_page()
+                                         self.google_alternate, self.name_profile, self._request).start_loop_page()
 
         return res_search_site

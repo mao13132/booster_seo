@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.booster.get_profile import GetProfile
 from src.booster.get_requests import GetRequests
 from src.booster.iter_job import IterJob
@@ -13,17 +15,20 @@ class BoosterStart:
         list_requests = GetRequests(self.google_alternate).get_job_requests()
 
         if list_requests == []:
-            SendlerOneCreate('').save_text('Список запросов пуст')
+            SendlerOneCreate('').save_text(f'BoosterSeo: Список запросов пуст')
             return []
 
-        print(f'Получил список из {len(list_requests)} запросов')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+              f'BoosterSeo: Получил список из {len(list_requests)} запросов')
 
         list_profile = GetProfile(self.google_alternate).get_profile()
 
-        print(f'Получил список из {len(list_profile)} профилей')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+              f'BoosterSeo: Получил список из {len(list_profile)} профилей')
 
         if list_profile == []:
-            SendlerOneCreate('').save_text('Нет профилей для работы')
+            SendlerOneCreate('').save_text(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                                           f'BoosterSeo: Нет профилей для работы')
             return []
 
         res_iter_job = IterJob(self.google_alternate, list_requests,

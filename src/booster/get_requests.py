@@ -21,7 +21,6 @@ class GetRequests:
                 complete_count = int(complete_count)
                 target_count = int(target_count)
             except:
-                print(f'Не верное написание кол-во кликов')
                 continue
 
             if complete_count >= target_count:

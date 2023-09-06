@@ -21,7 +21,6 @@ class GetProfile:
             try:
                 count_click = int(count_click)
             except:
-                print(f'Не верное написание кол-во кликов')
                 continue
 
             if status != self.job_status:
@@ -39,6 +38,7 @@ class GetProfile:
             _temp['row'] = count
             _temp['user_agent'] = user_agent
             _temp['max_click'] = max_click
+            _temp['complete_click'] = count_click
             _temp['name_sheet'] = self.name_sheets_requests
 
             good_list.append(_temp)

@@ -1,5 +1,6 @@
 import os
 import platform
+from datetime import datetime
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -86,6 +87,6 @@ class CreatBrowser:
         try:
             browser_version = self.driver.capabilities['browserVersion']
             driver_version = self.driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
-            print(f"\nБраузер: {browser_version} драйвер: {driver_version}")
+            print(f'\n{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Браузер: {browser_version} драйвер: {driver_version}')
         except:
             print(f'\nНе получилось определить версию uc браузера')
