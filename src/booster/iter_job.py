@@ -46,10 +46,14 @@ class IterJob:
 
             try:
 
-                res_farm = YandexFarmSearch(browser.driver, name_profile, target_request, self.dir_project).start_job_search_target_site()
+                res_farm = YandexFarmSearch(browser.driver, name_profile, target_request, self.dir_project,
+                                            self.google_alternate).start_job_search_target_site()
 
                 if res_farm:
+                    total_click = _request['complete_click'] + 1
+
                     print(f'Запуск шаблона по фарму')
+                    self.google_alternate.write_in_cell(_request['name_sheet'], _request['row'], 2, total_click)
                 else:
                     continue
 

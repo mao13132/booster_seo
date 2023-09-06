@@ -36,8 +36,10 @@ class GetProfile:
             _temp = {}
 
             _temp['name_profile'] = name_profile
+            _temp['row'] = count
             _temp['user_agent'] = user_agent
             _temp['max_click'] = max_click
+            _temp['name_sheet'] = self.name_sheets_requests
 
             good_list.append(_temp)
 

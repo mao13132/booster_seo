@@ -40,6 +40,7 @@ class GetRequests:
             _temp['row'] = count
             _temp['max_click'] = max_click
             _temp['complete_click'] = complete_count
+            _temp['name_sheet'] = self.name_sheets_requests
 
             good_list.append(_temp)
 

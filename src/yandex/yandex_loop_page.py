@@ -11,7 +11,7 @@ from src.yandex.stoper import Stoper
 
 
 class YandexLoopPage:
-    def __init__(self, driver, target_request, dir_project):
+    def __init__(self, driver, target_request, dir_project, google_alternate, name_profile):
 
         self.driver = driver
 
@@ -29,6 +29,9 @@ class YandexLoopPage:
 
         self.captcha_core = NewCaptcha(self.driver, dir_project)
 
+        self.google_alternate = google_alternate
+
+        self.name_profile = name_profile
 
     def get_rows(self):
 
@@ -188,6 +191,7 @@ class YandexLoopPage:
             list_rows = self.get_rows()
 
             if not list_rows or list_rows == []:
+                print(f'Не смог получить поисковые строчки. Проверьте user agent "{self.name_profile}"')
                 return False
 
             # Цикл где каждую строчку проверяю на целевой сайт и рекламу
@@ -206,7 +210,6 @@ class YandexLoopPage:
             # Пролистываю страницу
             res_no_search = self.action_no_search_site(count_scroll, count_page_)
 
-
             if self.captcha_core.check_captcha():
                 continue
 
@@ -221,7 +224,9 @@ class YandexLoopPage:
 
             asyncio.run(Stoper().stoper(random.choices(self.time_lists)[0]))
 
-            print()
+        print(f'Все страницы обошёл')
+
+        return True
 
     def tab_switch(self):
 
@@ -244,5 +249,7 @@ class YandexLoopPage:
 
         if res_loop:
             self.tab_switch()
+
+            return True
 
         return res_loop

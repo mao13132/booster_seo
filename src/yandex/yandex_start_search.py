@@ -19,7 +19,7 @@ from src.yandex.yandex_loop_page import YandexLoopPage
 
 
 class YandexFarmSearch:
-    def __init__(self, driver, name_profile, target_request, dir_project):
+    def __init__(self, driver, name_profile, target_request, dir_project, google_alternate):
         self.driver = driver
 
         self.msg = f'Аккаунт: "{name_profile}"'
@@ -31,6 +31,10 @@ class YandexFarmSearch:
         self.count_try = 3
 
         self.dir_project = dir_project
+
+        self.google_alternate = google_alternate
+
+        self.name_profile = name_profile
 
     def write_request(self):
 
@@ -70,8 +74,7 @@ class YandexFarmSearch:
         if not self.write_request():
             return False
 
-        res_search_site = YandexLoopPage(self.driver, self.target_request, self.dir_project).start_loop_page()
-
-        print()
+        res_search_site = YandexLoopPage(self.driver, self.target_request, self.dir_project,
+                                         self.google_alternate, self.name_profile).start_loop_page()
 
         return res_search_site
