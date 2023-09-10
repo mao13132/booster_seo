@@ -210,6 +210,8 @@ class YandexLoopPage:
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                   f'Ищу сайт "{self.site}" на {count_page_} странице yandex')
 
+            time.sleep(3)
+
             # Получаю строки
             list_rows = self.get_rows()
 

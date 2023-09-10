@@ -83,7 +83,7 @@ class YandexInsertRequest:
             pass
 
         count = 0
-        count_try = 2
+        count_try = 3
 
         while True:
 

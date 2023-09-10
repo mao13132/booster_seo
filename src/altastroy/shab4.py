@@ -7,16 +7,16 @@ from selenium.webdriver.common.by import By
 from src.yandex.scroll import Scroll
 
 
-class Shab3:
+class Shab4:
     def __init__(self, driver):
 
         self.driver = driver
 
         self.scroll_core = Scroll(driver)
 
-        self.list_time = [169, 224, 261, 197, 216]
+        self.list_time = [187, 235, 278, 194, 261]
 
-        self.micro_sleep = [18, 28, 17, 7, 35]
+        self.micro_sleep = [19, 24, 16, 13, 31]
 
         self.links = ['Отзывы', 'Акции', 'Магазины']
 
@@ -56,6 +56,20 @@ class Shab3:
 
         return True
 
+    def click_cabinet(self):
+
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+              f'BoosterSeo: кликаю на вход в кабинет')
+
+        try:
+            self.driver.find_element(by=By.XPATH,
+                                     value=f"//*[@class='block-login']").click()
+
+        except:
+            return False
+
+        return True
+
     def click_phone_form(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
@@ -74,10 +88,38 @@ class Shab3:
 
         return True
 
+    def click_buy(self):
+
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+              f'BoosterSeo: кликаю на купить')
+
+        try:
+            self.driver.find_elements(by=By.XPATH,
+                                      value=f"//*[contains(text(), 'Купить')]")[1].click()
+        except:
+
+            try:
+                self.driver.find_elements(by=By.XPATH,
+                                          value=f"//*[contains(text(), 'Купить')]")[2].click()
+            except:
+                return False
+
+        time.sleep(2)
+
+        try:
+            self.driver.find_element(by=By.XPATH,
+                                     value=f"//*[contains(text(), 'Продолжить покупки')]").click()
+        except:
+            pass
+
+        return True
+
     def start_shab(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Зашёл на целевой сайт. Начинаю имитацию поведения человека по шаблону 3')
+              f'BoosterSeo: Зашёл на целевой сайт. Начинаю имитацию поведения человека по шаблону 4')
+
+        self.click_buy()
 
         _sec = random.choice(self.list_time)
 
@@ -89,6 +131,8 @@ class Shab3:
         _mic = random.choice(self.micro_sleep)
 
         self.scroll_core.set_scroll_range(_mic)
+
+        self.click_cabinet()
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
               f'BoosterSeo: кликаю на логотип')

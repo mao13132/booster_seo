@@ -61,4 +61,6 @@ class LoadPage:
 
                 continue
 
+            self.driver.set_page_load_timeout(60)
+
             return True
