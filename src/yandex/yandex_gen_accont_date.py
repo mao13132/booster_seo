@@ -212,6 +212,13 @@ class YandexAccaunt:
         return choices(_list_familia)[0]
 
     @staticmethod
+    def gen_request():
+        _list_familia = ['установщик', 'риэлтор', 'директолог', 'портной', 'юрист', 'Путевка', 'Билеты', 'Купить',
+                         'Скупка', 'с доставкой', 'оптовый', 'склад', 'такси', 'автобус']
+
+        return choices(_list_familia)[0]
+
+    @staticmethod
     def get_user_agent():
         _user_agent_list = [
             'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',

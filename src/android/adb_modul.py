@@ -17,8 +17,6 @@ class Check_emul:
             print(f'Ошибка: Не обнаружен adb.exe')
             return
 
-        # os.system('\\android\\adb.exe devices')
-
         self.client = AdbClient(host="127.0.0.1", port=5037)
 
     def connect_to_adb(self):

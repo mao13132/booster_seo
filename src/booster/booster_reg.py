@@ -49,7 +49,7 @@ class BoosterReg:
 
         except Exception as es:
 
-            print(f'Ошибка при создание браузера "{name_profile}" "{user_agent}" "{es}"')
+            print(f'Ошибка при создание браузера reg "{name_profile}" "{user_agent}" "{es}"')
 
             return False
 
@@ -119,7 +119,7 @@ class BoosterReg:
 
                     except:
 
-                        print(f'Не смог перезагрузить прокси')
+                        print(f'Не смог перезагрузить прокси reg')
 
                         return False
 

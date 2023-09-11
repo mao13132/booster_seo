@@ -467,6 +467,6 @@ class _BoosterReg:
 
         self.write_data_to_google_sheet(last_good_row)
 
-        print(f'BoosterSeo: Успешно зарегистрировал аккаунт')
+        print(f'BoosterSeo: Успешно зарегистрировал аккаунт {self.data_user["name_profile"]}')
 
         return True

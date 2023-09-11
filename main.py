@@ -18,11 +18,11 @@ def main():
 
     google_alternate = ConnectGoogleCore()
 
-    # res_booster = BoosterStart(google_alternate, dir_project, android_phone).booster_start()
+    res_booster = BoosterStart(google_alternate, dir_project, android_phone).booster_start()
 
     res_reg = BoosterFarmAcc(google_alternate, dir_project, android_phone).start_farm()
 
-    # res_reg = BoosterReg(google_alternate, dir_project, android_phone).start_reg()
+    res_reg = BoosterReg(google_alternate, dir_project, android_phone).start_reg()
 
 
 if __name__ == '__main__':

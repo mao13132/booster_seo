@@ -1,14 +1,12 @@
 import random
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from settings import MAX_REGISTRATION_ACCOUNT, MAX_DAY_FARM
-from src.booster._booster_reg import _BoosterReg
+from settings import MAX_DAY_FARM
+from src.booster._booster_farm_acc import _BoosterFarmAcc
 from src.booster.get_profile import GetProfile
 from src.browser.createbrowser import CreatBrowser
 from src.google.google_core import ConnectGoogleCore
-
-from src.yandex.yandex_gen_accont_date import YandexAccaunt
 
 
 class BoosterFarmAcc:
@@ -16,6 +14,8 @@ class BoosterFarmAcc:
         self.google_alternate = google_alternate
         self.dir_project = dir_project
         self.android_phone = android_phone
+
+        self.stop_farm = timedelta(hours=12)
 
     def get_account_farm_list(self):
 
@@ -40,32 +40,69 @@ class BoosterFarmAcc:
 
             return account_farm_list
 
+    def start_profile(self, name_profile, user_agent):
+
+        try:
+
+            browser = CreatBrowser(self.dir_project, name_profile, user_agent)
+
+        except Exception as es:
+
+            print(f'Ошибка при создание браузера farm "{name_profile}" "{user_agent}" "{es}"')
+
+            return False
+
+        return browser
+
+    def date_over_old_farm(self, _date):
+        _date = datetime.strptime(_date, '%Y-%m-%d %H:%M:%S')
+
+        now_time = datetime.strptime(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
+
+        target_time = now_time - _date
+
+        if target_time < self.stop_farm:
+            return False
+
+        return True
+
     def iter_farm(self, list_account_farm):
 
         _farm_status = False
 
-        for _reg_acc in range(list_account_farm):
+        for count, _reg_acc in enumerate(list_account_farm):
 
             try:
 
-                last_good_row = self.get_last_row()
+                _profile = _reg_acc['_profile']
 
-                time.sleep(1)
+                account_row = _reg_acc['row']
 
-                count_zero = GetProfile(self.google_alternate).get_count_zero_profile()
+                name_profile = _profile[0]
 
-                if count_zero >= MAX_REGISTRATION_ACCOUNT:
-                    print(f'BoosterSeo: Зарегистрировано максимальное кол-во аккаунтов ({MAX_REGISTRATION_ACCOUNT})')
-                    return True
+                user_aget = _profile[1]
 
-                data_user = self.generate_data_new_user()
+                status = int(_profile[3])
+
+                login_password = _profile[4]
+
+                date_account = _profile[5]
+
+                check_date = self.date_over_old_farm(date_account)
+
+                if not check_date:
+                    continue
 
                 _farm_status = True
 
-                browser = self.start_profile(data_user['name_profile'], data_user['user_agent'])
+                browser = self.start_profile(name_profile, user_aget)
 
-                res_reg = _BoosterReg(self.google_alternate, self.dir_project, self.android_phone,
-                                      browser.driver, data_user).start_reg(last_good_row)
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: начинаю прогрев "{name_profile}"')
+
+                res_reg = _BoosterFarmAcc(self.google_alternate, self.dir_project, self.android_phone,
+                                          browser.driver, status, login_password).start_farm(account_row)
+
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: закончил прогрев "{name_profile}"')
 
 
             finally:
@@ -73,7 +110,7 @@ class BoosterFarmAcc:
 
                     browser.driver.quit()
 
-                    """Если зарегистрировал то перезагружаю IP"""
+                    """Если прогревал аккаунт то перезагружаю IP"""
                     try:
                         self.android_phone.start_reboot_ip()
 
@@ -81,7 +118,7 @@ class BoosterFarmAcc:
 
                     except:
 
-                        print(f'Не смог перезагрузить прокси')
+                        print(f'Не смог перезагрузить прокси farm')
 
                         return False
 
