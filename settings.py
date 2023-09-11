@@ -6,17 +6,13 @@ dotenv_path = os.path.join(os.path.dirname(__file__), 'src', '.env')
 
 load_dotenv(dotenv_path)
 
-API_KEY_GOOGLE = 'booster_seo.json'
+MAX_CLICK_ONE_ACCOUNT = 5  # Максимальное кол-во кликов с 1 аккаунта
 
-ID_SHEET = os.getenv('ID_SHEET')
+MAX_REGISTRATION_ACCOUNT = 16  # Максимальный запас новых аккаунтов
 
-NAME_SERVER = 'server_ip'
+MAX_COUNT_PAGE = 10  # Максимальная страница до которой ведётся поиск целевого сайта
 
-MAX_CLICK_ONE_ACCOUNT = 5
-
-MAX_REGISTRATION_ACCOUNT = 5
-
-MAX_COUNT_PAGE = 10
+MAX_DAY_FARM = 3  # Максимальное кол-во дней прогрева аккаунтов
 
 PROXY_HOST = '192.168.0.100'
 
@@ -26,8 +22,14 @@ PROXY_USER = 'admin'
 
 PROXY_PASS = '123123'
 
-# LINK_RELOAD = 'http://176.9.113.111:20005/?command=switch&api_key=gNMLTBja2JNqnZWZPcvi&m_key=RBsxNJGh3A&port=21431'
+API_KEY_GOOGLE = 'booster_seo.json'
+
+NAME_SERVER = 'main_razrabotka'
+
+ID_SHEET = os.getenv('ID_SHEET')
 
 CAPTCHA_TOKEN = os.getenv('CAPTCHA_TOKEN')
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+
+SMS_TOKEN = os.getenv('SMS_TOKEN')

@@ -2,7 +2,7 @@ import random
 import time
 from datetime import datetime
 
-from settings import MAX_REGISTRATION_ACCOUNT
+from settings import MAX_REGISTRATION_ACCOUNT, MAX_DAY_FARM
 from src.booster._booster_reg import _BoosterReg
 from src.booster.get_profile import GetProfile
 from src.browser.createbrowser import CreatBrowser
@@ -11,51 +11,13 @@ from src.google.google_core import ConnectGoogleCore
 from src.yandex.yandex_gen_accont_date import YandexAccaunt
 
 
-class BoosterReg:
+class BoosterFarmAcc:
     def __init__(self, google_alternate, dir_project, android_phone):
         self.google_alternate = google_alternate
         self.dir_project = dir_project
         self.android_phone = android_phone
 
-    def generate_data_new_user(self):
-        name_account = YandexAccaunt.get_name()
-
-        surname_account = YandexAccaunt.get_surname()
-
-        name_profile = YandexAccaunt.get_name_profile(name_account, surname_account)
-
-        login_account = f"{name_profile}{random.randint(10000, 99999)}"
-
-        user_agent = YandexAccaunt.get_user_agent()
-
-        password_account = YandexAccaunt.gen_password()
-
-        _dict = {
-            'name_account': name_account,
-            'surname_account': surname_account,
-            'name_profile': name_profile,
-            'login_account': login_account,
-            'user_agent': user_agent,
-            'password_account': password_account,
-        }
-
-        return _dict
-
-    def start_profile(self, name_profile, user_agent):
-
-        try:
-
-            browser = CreatBrowser(self.dir_project, name_profile, user_agent)
-
-        except Exception as es:
-
-            print(f'Ошибка при создание браузера "{name_profile}" "{user_agent}" "{es}"')
-
-            return False
-
-        return browser
-
-    def get_last_row(self):
+    def get_account_farm_list(self):
 
         count = 0
 
@@ -66,23 +28,23 @@ class BoosterReg:
             count += 1
 
             if count > count_try:
-                print(f'BoosterSeo: Не смог получить последнюю строчку профилей')
+                print(f'BoosterSeo: Не смог получить список профилей для прогрева')
                 return False
 
-            count_zero = GetProfile(self.google_alternate).get_last_row_profile()
+            account_farm_list = GetProfile(self.google_alternate).get_account_farm()
 
-            if not count_zero:
+            if not account_farm_list:
                 self.google_alternate = ConnectGoogleCore()
 
                 continue
 
-            return count_zero
+            return account_farm_list
 
-    def iter_reg(self):
+    def iter_farm(self, list_account_farm):
 
-        _reg_status = False
+        _farm_status = False
 
-        for _reg_acc in range(MAX_REGISTRATION_ACCOUNT):
+        for _reg_acc in range(list_account_farm):
 
             try:
 
@@ -98,7 +60,7 @@ class BoosterReg:
 
                 data_user = self.generate_data_new_user()
 
-                _reg_status = True
+                _farm_status = True
 
                 browser = self.start_profile(data_user['name_profile'], data_user['user_agent'])
 
@@ -107,7 +69,7 @@ class BoosterReg:
 
 
             finally:
-                if _reg_status:
+                if _farm_status:
 
                     browser.driver.quit()
 
@@ -115,7 +77,7 @@ class BoosterReg:
                     try:
                         self.android_phone.start_reboot_ip()
 
-                        _reg_status = False
+                        _farm_status = False
 
                     except:
 
@@ -125,11 +87,13 @@ class BoosterReg:
 
         return True
 
-    def start_reg(self):
+    def start_farm(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Запущен режим регистрации {MAX_REGISTRATION_ACCOUNT} аккаунтов')
+              f'BoosterSeo: Запущен режим прогрева аккаунтов моложе {MAX_DAY_FARM} дней')
 
-        res_iter = self.iter_reg()
+        list_account_farm = self.get_account_farm_list()
+
+        res_iter = self.iter_farm(list_account_farm)
 
         return res_iter

@@ -35,6 +35,4 @@ class BoosterStart:
         res_iter_job = IterJob(self.google_alternate, list_requests,
                                list_profile, self.dir_project, self.android_phone).start_iter_job()
 
-        print()
-
-
+        return True

@@ -86,7 +86,31 @@ class ConnectGoogleCore:
 
             return True
 
-        msg = f'{NAME_SERVER} Исчерпал все попытки google_core write_in_cell: "{es}"'
+        msg = f'{NAME_SERVER} Исчерпал все попытки google_core write_in_cell: ""'
+
+        print(msg)
+
+        SendlerOneCreate('').save_text(msg)
+
+        return False
+
+    def write_in_range_account(self, name_sheet, row, data_):
+
+        for _try in range(2):
+
+            try:
+
+                worksheet = self.sheet.worksheet(name_sheet)
+
+                worksheet.update(f'A{row}:F{row}', [data_])
+
+            except Exception as es:
+                print(f'Ошибка "{es}"')
+                continue
+
+            return True
+
+        msg = f'{NAME_SERVER} Исчерпал все попытки google_core write_in_range_account ""'
 
         print(msg)
 
@@ -96,34 +120,11 @@ class ConnectGoogleCore:
 
     def get_data_by_range(self, name_sheet, range_):
 
-        worksheet = self.sheet.worksheet(name_sheet)
-
-        return worksheet.get_values(range_)
-
-    def write_data_from_exel_file(self, good_range_date, name_sheet, count_google_row,
-                                  position, rez_ocenka, popular_request, trade_product, popular_total):
-
         try:
 
-            if position == '':
-                print(f'Пустое значение словить')
-
             worksheet = self.sheet.worksheet(name_sheet)
-
-            position_columns = good_range_date[0]['range1']['job_index_col']
-
-            job_row = 3 + count_google_row
-
-            worksheet.update_cell(job_row, position_columns, position)
-
-
         except Exception as es:
-            msg = f'{NAME_SERVER} Ошибка write_data_from_exel_file: "{es}"'
-
-            print(msg)
-
-            SendlerOneCreate('').save_text(msg)
-
+            # print(f'Ошибка при работе с google "{es}"')
             return False
 
-        return True
+        return worksheet.get_values(range_)
