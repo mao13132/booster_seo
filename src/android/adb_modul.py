@@ -22,7 +22,7 @@ class Check_emul:
     def connect_to_adb(self):
         return True
 
-    def check_emul(self):
+    def check_emul(self, dir_project):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
               f'Android: Начинаю подключение к телефону')
@@ -36,7 +36,7 @@ class Check_emul:
             except Exception as es:
                 if 'WinError 10061' in str(es):
                     # process_ = subprocess.run("cd src\\android & adb.exe & adb devices -l", shell=True)
-                    process_ = subprocess.run("cd src\\android\\adb.exe & adb devices -l", shell=True)
+                    process_ = subprocess.run(f"cd {dir_project}\\src\\android & adb.exe & adb devices -l", shell=True)
                     continue
 
             if list_device == []:

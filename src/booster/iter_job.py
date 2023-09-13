@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from settings import NAME_SERVER, MAX_CLICK_ONE_ACCOUNT
 from src.altastroy.choice_shab import CoiceShab
 
@@ -71,10 +73,17 @@ class IterJob:
 
         self.loop_write_in_cell(_request['name_sheet'], row_, columns_, total_click)
 
-        browser_profile['complete_click'] = browser_profile['complete_click'] + 1
+        ######################################################################
 
-        if browser_profile['complete_click'] < MAX_CLICK_ONE_ACCOUNT:
-            self.list_profile.append(browser_profile)
+        columns_last_date = 6
+
+        last_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        self.loop_write_in_cell(_request['name_sheet'], row_, columns_last_date, last_date)
+
+        ######################################################################
+
+        browser_profile['complete_click'] = browser_profile['complete_click'] + 1
 
         row_ = browser_profile['row'] + 2
 
@@ -82,6 +91,11 @@ class IterJob:
 
         self.loop_write_in_cell(browser_profile['name_sheet'], row_, columns_,
                                 browser_profile['complete_click'])
+
+        ######################################################################
+
+        if browser_profile['complete_click'] < MAX_CLICK_ONE_ACCOUNT:
+            self.list_profile.append(browser_profile)
 
         return True
 

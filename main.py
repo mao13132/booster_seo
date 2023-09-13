@@ -11,7 +11,8 @@ from src.google.google_core import ConnectGoogleCore
 def main():
     dir_project = os.getcwd()
 
-    android_phone = android_core_one_step()
+    # android_phone = android_core_one_step(dir_project)
+    android_phone = True
 
     if not android_phone:
         return False

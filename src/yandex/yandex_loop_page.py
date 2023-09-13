@@ -151,6 +151,20 @@ class YandexLoopPage:
 
         res_write = self.loop_write_in_cell(self._request['name_sheet'], row_, columns_, count_row_)
 
+        if self._request['start_page'] == 0:
+
+            columns_ = 7
+
+            self.loop_write_in_cell(self._request['name_sheet'], row_, columns_, count_page_)
+
+            columns_ = 8
+
+            self.loop_write_in_cell(self._request['name_sheet'], row_, columns_, count_row_)
+
+            columns_ = 9
+
+            self.loop_write_in_cell(self._request['name_sheet'], row_, columns_, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
         return res_write
 
     def loop_rows(self, list_rows, count_page_):

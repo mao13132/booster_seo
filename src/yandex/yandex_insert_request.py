@@ -3,6 +3,7 @@ import random
 import time
 from datetime import datetime
 
+from src.yandex.new_captcha import NewCaptcha
 from src.yandex.stoper import Stoper
 
 from selenium.webdriver.common.by import By
@@ -13,9 +14,13 @@ from src.yandex.yandex_check_modal import YandexCheckModal
 
 
 class YandexInsertRequest:
-    def __init__(self, driver):
+    def __init__(self, driver, dir_project):
         self.driver = driver
         self.count_write_wait = [0.1, 0.2, 1.3]
+
+        self.dir_project = dir_project
+
+        self.captcha_core = NewCaptcha(self.driver, dir_project)
 
     def check_form_search(self):
         try:
@@ -90,6 +95,10 @@ class YandexInsertRequest:
             count += 1
 
             if count > count_try:
+
+                if self.captcha_core.check_captcha():
+                    continue
+
                 print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                       f'Не обнаружен запрос "{_request}')
 

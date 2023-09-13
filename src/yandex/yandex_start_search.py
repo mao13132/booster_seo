@@ -52,7 +52,7 @@ class YandexFarmSearch:
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                   f'{self.msg} Начинаю обработку ключевика "{self.target_request}"')
 
-            res_insert_request = YandexInsertRequest(self.driver).loop_insert_search(self.target_request)
+            res_insert_request = YandexInsertRequest(self.driver, self.dir_project).loop_insert_search(self.target_request)
 
             if res_insert_request:
                 return True

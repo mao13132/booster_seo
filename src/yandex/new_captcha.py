@@ -100,6 +100,9 @@ class NewCaptcha:
 
             return res_load
 
+        else:
+            return True
+
     def resize_image(self, name_file):
         try:
             foo = Image.open(name_file)
