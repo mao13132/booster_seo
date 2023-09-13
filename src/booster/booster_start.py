@@ -28,8 +28,9 @@ class BoosterStart:
               f'BoosterSeo: Получил список из {len(list_profile)} профилей')
 
         if list_profile == []:
-            SendlerOneCreate('').save_text(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                                           f'BoosterSeo: Нет профилей для работы')
+            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                  f'BoosterSeo: Нет профилей для работы')
+
             return []
 
         res_iter_job = IterJob(self.google_alternate, list_requests,

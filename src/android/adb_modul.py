@@ -35,8 +35,8 @@ class Check_emul:
 
             except Exception as es:
                 if 'WinError 10061' in str(es):
-                    process_ = subprocess.run("cd src\\android & adb.exe & adb devices -l", shell=True)
-
+                    # process_ = subprocess.run("cd src\\android & adb.exe & adb devices -l", shell=True)
+                    process_ = subprocess.run("cd src\\android\\adb.exe & adb devices -l", shell=True)
                     continue
 
             if list_device == []:

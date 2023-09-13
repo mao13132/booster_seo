@@ -74,6 +74,16 @@ class Shab3:
 
         return True
 
+    def close_pop_up(self):
+        try:
+            self.driver.find_element(by=By.XPATH,
+                                     value=f"//*[contains(@class, 'popup__main')]"
+                                           f"//button[contains(@class, 'close')]").click()
+        except:
+            return False
+
+        return True
+
     def start_shab(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
@@ -99,6 +109,8 @@ class Shab3:
               f'BoosterSeo: Засыпаю на {_sec} секунд(у)')
 
         time.sleep(_sec)
+
+        self.close_pop_up()
 
         self.scroll_core.set_scroll_range(_mic)
 

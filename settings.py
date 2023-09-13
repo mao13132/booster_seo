@@ -14,6 +14,8 @@ MAX_COUNT_PAGE = 10  # Максимальная страница до котор
 
 MAX_DAY_FARM = 3  # Максимальное кол-во дней прогрева аккаунтов
 
+USE_PROXY = True
+
 PROXY_HOST = '192.168.0.100'
 
 PROXY_PORT = 8083

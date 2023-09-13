@@ -1,4 +1,8 @@
-from settings import MAX_DAY_FARM
+from datetime import datetime, timedelta
+
+from settings import MAX_DAY_FARM, NAME_SERVER
+from src.google.google_core import ConnectGoogleCore
+from src.telegram_debug import SendlerOneCreate
 
 
 class GetProfile:
@@ -13,6 +17,33 @@ class GetProfile:
         self.max_click_one_account = 5
 
         self.job_status = 'active'
+
+        self.stop_farm = timedelta(hours=12)
+
+    def loop_write_in_cell(self, name_sheet, account_row, columns, over_status):
+
+        count = 0
+
+        count_try = 4
+
+        while True:
+
+            count += 1
+
+            if count > count_try:
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                                               f'в строчку "{account_row}" get_profile')
+
+                return False
+
+            res_write = self.google_alternate.new_write_in_cell(name_sheet, account_row, columns, over_status)
+
+            if not res_write:
+                self.google_alternate = ConnectGoogleCore()
+
+                continue
+
+            return res_write
 
     def get_active_profile(self, list_profiles):
 
@@ -37,7 +68,10 @@ class GetProfile:
                 continue
 
             if count_click >= self.max_click_one_account:
-                self.google_alternate.write_in_cell(self.name_sheets_requests, count + 2, 4, 'Превышен лимит кликов')
+                # self.google_alternate.write_in_cell(self.name_sheets_requests, count + 2, 4, 'Превышен лимит кликов')
+
+                self.loop_write_in_cell(self.name_sheets_requests, count + 2, 4, 'Превышен лимит кликов')
+
                 continue
 
             max_click = self.max_click_one_account - count_click
@@ -86,6 +120,18 @@ class GetProfile:
 
         return count
 
+    def date_over_old_farm(self, _date):
+        _date = datetime.strptime(_date, '%Y-%m-%d %H:%M:%S')
+
+        now_time = datetime.strptime(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
+
+        target_time = now_time - _date
+
+        if target_time < self.stop_farm:
+            return False
+
+        return True
+
     def get_account_farm(self):
 
         good_list = []
@@ -98,6 +144,13 @@ class GetProfile:
         for count_row, _profile in enumerate(list_profiles):
 
             status = _profile[3]
+
+            date_account = _profile[5]
+
+            check_date = self.date_over_old_farm(date_account)
+
+            if not check_date:
+                continue
 
             if status.isdigit():
 
@@ -113,8 +166,8 @@ class GetProfile:
                     good_list.append(_temp)
 
                 else:
-                    self.google_alternate.write_in_cell(self.name_sheets_requests, count_row + 2, 4,
-                                                        'active')
+                    self.loop_write_in_cell(self.name_sheets_requests, count_row + 2, 4,
+                                            'active')
                     print(f'BoosterSeo: Перевёл аккаунт {_profile[0]} в active')
 
         return good_list

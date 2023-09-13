@@ -38,6 +38,16 @@ class Shab2:
 
         return True
 
+    def close_pop_up(self):
+        try:
+            self.driver.find_element(by=By.XPATH,
+                                     value=f"//*[contains(@class, 'popup__main')]"
+                                           f"//button[contains(@class, 'close')]").click()
+        except:
+            return False
+
+        return True
+
     def start_shab(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
@@ -61,6 +71,8 @@ class Shab2:
         self.click_review(_link)
 
         _sec = random.choice(self.list_time)
+
+        self.close_pop_up()
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
               f'BoosterSeo: Засыпаю на {_sec} секунд(у)')

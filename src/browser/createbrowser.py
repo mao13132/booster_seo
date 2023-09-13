@@ -9,6 +9,7 @@ import zipfile
 
 import getpass
 
+from settings import USE_PROXY
 from src.browser.create_proxy import manifest_json, background_js
 
 
@@ -19,7 +20,7 @@ class CreatBrowser:
 
     def __init__(self, dir_project, name_profile, user_agent):
 
-        proxy = True
+        proxy = USE_PROXY
 
         options = webdriver.ChromeOptions()
 
@@ -69,6 +70,9 @@ class CreatBrowser:
                 zp.writestr('background.js', background_js)
 
             options.add_extension(plugin_file)
+        else:
+            options.add_argument(
+                "--disable-extensions")
 
         tz_params = {'timezoneId': 'Asia/Almaty'}
 
@@ -87,6 +91,7 @@ class CreatBrowser:
         try:
             browser_version = self.driver.capabilities['browserVersion']
             driver_version = self.driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
-            print(f'\n{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Браузер: {browser_version} драйвер: {driver_version}')
+            print(
+                f'\n{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Браузер: {browser_version} драйвер: {driver_version}')
         except:
             print(f'\nНе получилось определить версию uc браузера')

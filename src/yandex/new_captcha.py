@@ -34,7 +34,11 @@ class NewCaptcha:
         self.dir_project = dir_project
 
     def _check_url_capt(self):
-        self._captcha_url = self.driver.current_url
+        try:
+            self._captcha_url = self.driver.current_url
+        except Exception as es:
+            print(f"Ошибка при заборе адресной строки. Капча '{es}'")
+            return False
 
         if 'captcha' in self._captcha_url:
             return True
@@ -50,7 +54,7 @@ class NewCaptcha:
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Captcha Checker: Обнаружена капча')
             return True
         except:
-            return True
+            return False
 
     def click_captcha_one_windows(self):
         try:
@@ -61,7 +65,7 @@ class NewCaptcha:
 
         except:
 
-            return True
+            return False
 
     def check_good_click(self):
         count = 0
@@ -79,6 +83,10 @@ class NewCaptcha:
                 elem = self.driver.find_element(by=By.XPATH, value=f"//*[contains(@class, 'AdvancedCaptcha-View')]")
             except:
                 time.sleep(1)
+
+                if not self._check_url_capt():
+                    return False
+
                 continue
 
             return True
@@ -295,6 +303,12 @@ class NewCaptcha:
         for _try in range(5):
 
             if _try > 0:
+
+                check_job_captcha = self._check_url_capt()
+
+                if not check_job_captcha:
+                    return True
+
                 print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                       f'Captcha Checker: повторная попытка решения капчи')
 
@@ -311,11 +325,6 @@ class NewCaptcha:
                 self.driver.refresh()
                 time.sleep(1)
                 continue
-
-            check_job_captcha = self._check_url_capt()
-
-            if not check_job_captcha:
-                return True
 
         SendlerOneCreate('').save_text(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                                        f'Captcha Checker: Все попытки по получению капчи исчерпаны')

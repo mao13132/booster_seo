@@ -8,6 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
+from settings import NAME_SERVER
+from src.google.google_core import ConnectGoogleCore
+from src.telegram_debug import SendlerOneCreate
 from src.yandex.load_page import LoadPage
 from src.yandex.sms_activate_api import SmsActivateApi
 from src.yandex.yandex_gen_accont_date import YandexAccaunt
@@ -63,16 +66,41 @@ class _BoosterFarmAcc:
 
         return True
 
+    def loop_write_in_cell(self, name_sheet, account_row, columns, over_status):
+
+        count = 0
+
+        count_try = 4
+
+        while True:
+
+            count += 1
+
+            if count > count_try:
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                                               f'в строчку "{account_row}" farm')
+
+                return False
+
+            res_write = self.google_alternate.new_write_in_cell(name_sheet, account_row, columns, over_status)
+
+            if not res_write:
+                self.google_alternate = ConnectGoogleCore()
+
+                continue
+
+            return res_write
+
     def start_farm(self, account_row):
 
         res = self.list_shab[random.choice([x for x in self.list_shab.keys()])]()
 
         over_status = self.status + 1
 
-        self.google_alternate.write_in_cell('аккаунты', account_row, 4, over_status)
+        self.loop_write_in_cell('аккаунты', account_row, 4, over_status)
 
         time.sleep(1)
 
-        self.google_alternate.write_in_cell('аккаунты', account_row, 6, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        self.loop_write_in_cell('аккаунты', account_row, 6, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         return True

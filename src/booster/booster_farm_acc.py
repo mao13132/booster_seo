@@ -15,8 +15,6 @@ class BoosterFarmAcc:
         self.dir_project = dir_project
         self.android_phone = android_phone
 
-        self.stop_farm = timedelta(hours=12)
-
     def get_account_farm_list(self):
 
         count = 0
@@ -32,6 +30,9 @@ class BoosterFarmAcc:
                 return False
 
             account_farm_list = GetProfile(self.google_alternate).get_account_farm()
+
+            if account_farm_list == []:
+                return []
 
             if not account_farm_list:
                 self.google_alternate = ConnectGoogleCore()
@@ -54,18 +55,6 @@ class BoosterFarmAcc:
 
         return browser
 
-    def date_over_old_farm(self, _date):
-        _date = datetime.strptime(_date, '%Y-%m-%d %H:%M:%S')
-
-        now_time = datetime.strptime(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
-
-        target_time = now_time - _date
-
-        if target_time < self.stop_farm:
-            return False
-
-        return True
-
     def iter_farm(self, list_account_farm):
 
         _farm_status = False
@@ -85,13 +74,6 @@ class BoosterFarmAcc:
                 status = int(_profile[3])
 
                 login_password = _profile[4]
-
-                date_account = _profile[5]
-
-                check_date = self.date_over_old_farm(date_account)
-
-                if not check_date:
-                    continue
 
                 _farm_status = True
 
@@ -126,10 +108,15 @@ class BoosterFarmAcc:
 
     def start_farm(self):
 
+        list_account_farm = self.get_account_farm_list()
+
+        if list_account_farm == []:
+            print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                  f'BoosterSeo: Запущен режим прогрева аккаунтов моложе {MAX_DAY_FARM} дней')
+            return True
+
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
               f'BoosterSeo: Запущен режим прогрева аккаунтов моложе {MAX_DAY_FARM} дней')
-
-        list_account_farm = self.get_account_farm_list()
 
         res_iter = self.iter_farm(list_account_farm)
 

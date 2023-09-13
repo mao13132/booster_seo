@@ -5,7 +5,9 @@ from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
-from settings import MAX_COUNT_PAGE
+from settings import MAX_COUNT_PAGE, NAME_SERVER
+from src.google.google_core import ConnectGoogleCore
+from src.telegram_debug import SendlerOneCreate
 from src.yandex.new_captcha import NewCaptcha
 from src.yandex.scroll import Scroll
 from src.yandex.stoper import Stoper
@@ -111,18 +113,43 @@ class YandexLoopPage:
 
         return False
 
+    def loop_write_in_cell(self, name_sheet, account_row, columns, over_status):
+
+        count = 0
+
+        count_try = 4
+
+        while True:
+
+            count += 1
+
+            if count > count_try:
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                                               f'в строчку "{account_row}" yandex_loop_page')
+
+                return False
+
+            res_write = self.google_alternate.new_write_in_cell(name_sheet, account_row, columns, over_status)
+
+            if not res_write:
+                self.google_alternate = ConnectGoogleCore()
+
+                continue
+
+            return res_write
+
     def write_new_value_sheet(self, count_page_, count_row_):
         row_ = self._request['row'] + 2
 
         columns_ = 4
 
-        res_write = self.google_alternate.write_in_cell(self._request['name_sheet'], row_, columns_, count_page_)
+        self.loop_write_in_cell(self._request['name_sheet'], row_, columns_, count_page_)
 
         time.sleep(1)
 
         columns_ = 5
 
-        res_write = self.google_alternate.write_in_cell(self._request['name_sheet'], row_, columns_, count_row_)
+        res_write = self.loop_write_in_cell(self._request['name_sheet'], row_, columns_, count_row_)
 
         return res_write
 

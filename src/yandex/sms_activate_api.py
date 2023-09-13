@@ -47,6 +47,11 @@ class SmsActivateApi:
         return self.status
 
     def set_status(self, id_order, status):
-        self.status = self.sa.setStatus(id_order, status=status)
+        try:
+            self.status = self.sa.setStatus(id_order, status=status)
+        except Exception as es:
+            print(f'Ошибка при проверки статуса смс "{es}"')
+
+            return False
 
         return self.status

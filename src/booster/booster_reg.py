@@ -121,14 +121,13 @@ class BoosterReg:
 
                         print(f'Не смог перезагрузить прокси reg')
 
-                        return False
 
         return True
 
     def start_reg(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Запущен режим регистрации {MAX_REGISTRATION_ACCOUNT} аккаунтов')
+              f'BoosterSeo: Запущен режим регистрации аккаунтов')
 
         res_iter = self.iter_reg()
 

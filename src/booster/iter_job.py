@@ -1,6 +1,8 @@
+from settings import NAME_SERVER, MAX_CLICK_ONE_ACCOUNT
 from src.altastroy.choice_shab import CoiceShab
 
 from src.browser.createbrowser import CreatBrowser
+from src.google.google_core import ConnectGoogleCore
 
 from src.telegram_debug import SendlerOneCreate
 
@@ -34,6 +36,31 @@ class IterJob:
 
         return browser
 
+    def loop_write_in_cell(self, name_sheet, account_row, columns, over_status):
+
+        count = 0
+
+        count_try = 4
+
+        while True:
+
+            count += 1
+
+            if count > count_try:
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                                               f'в строчку "{account_row}" iter_job')
+
+                return False
+
+            res_write = self.google_alternate.new_write_in_cell(name_sheet, account_row, columns, over_status)
+
+            if not res_write:
+                self.google_alternate = ConnectGoogleCore()
+
+                continue
+
+            return res_write
+
     def write_value_by_google(self, _request, browser_profile):
 
         total_click = _request['complete_click'] + 1
@@ -42,19 +69,19 @@ class IterJob:
 
         columns_ = 3
 
-        res_write = self.google_alternate.write_in_cell(_request['name_sheet'], row_, columns_, total_click)
+        self.loop_write_in_cell(_request['name_sheet'], row_, columns_, total_click)
 
         browser_profile['complete_click'] = browser_profile['complete_click'] + 1
 
-        if browser_profile['complete_click'] < browser_profile['max_click']:
+        if browser_profile['complete_click'] < MAX_CLICK_ONE_ACCOUNT:
             self.list_profile.append(browser_profile)
 
         row_ = browser_profile['row'] + 2
 
         columns_ = 3
 
-        res_write = self.google_alternate.write_in_cell(browser_profile['name_sheet'], row_, columns_,
-                                                        browser_profile['complete_click'])
+        self.loop_write_in_cell(browser_profile['name_sheet'], row_, columns_,
+                                browser_profile['complete_click'])
 
         return True
 
@@ -68,9 +95,7 @@ class IterJob:
                 browser_profile = self.list_profile.pop(0)
 
             except Exception as es:
-
-                SendlerOneCreate('').save_text(f'Кончились профили для обработки запросов')
-
+                print(f'Кончились профили для обработки запросов')
                 return False
 
             target_request = _request['request']
@@ -96,6 +121,9 @@ class IterJob:
                     CoiceShab(browser.driver).start_choice()
 
                 else:
+
+                    self.list_profile.append(browser_profile)
+
                     continue
 
             finally:
