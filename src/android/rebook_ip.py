@@ -17,7 +17,7 @@ class Reboot_ip:
 
             self.d.unlock()
 
-            if count > 5:
+            if count > 10:
                 print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                       f'Android: Прерываю попытки смены IP кончились попытки {count}')
                 return False
@@ -48,7 +48,9 @@ class Reboot_ip:
             return False
 
         self.load_site('https://whoer.net/ru')
+
         respons = self.check_load_site()
+
         if respons == False:
             return False
 

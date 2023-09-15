@@ -275,7 +275,12 @@ class _BoosterReg:
                 print(f'BoosterSeo: Не дождался смс - отправил отмену номера. Сбрасываю попытку')
                 return False
 
-            status = self.smscore.get_status(self.number_id)
+            try:
+
+                status = self.smscore.get_status(self.number_id)
+
+            except:
+                return False
 
             if 'STATUS_OK' in status:
                 _status_out = str(status).split(':')[-1]

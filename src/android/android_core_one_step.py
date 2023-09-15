@@ -13,6 +13,6 @@ def android_core_one_step(dir_project):
     print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
           f'Android: Подключился к устройству серийный номер: {serial}')
 
-    andrushka = Connect_phone(serial)
+    andrushka = Connect_phone(serial, dir_project)
 
     return andrushka

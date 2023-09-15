@@ -144,7 +144,11 @@ class IterJob:
 
                 browser.driver.quit()
                 try:
-                    self.android_phone.start_reboot_ip()
+                    res_reboot = self.android_phone.start_reboot_ip()
+
+                    if not res_reboot:
+                        return 'reboot'
+
                 except:
                     print(f'Не смог перезагрузить прокси')
                     return False

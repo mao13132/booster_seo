@@ -147,8 +147,12 @@ class NewCaptcha:
 
         name_ = os.path.join(self.dir_project, 'src', 'captcha', f'{name}.jpg')
 
-        with open(name_, "wb") as elem_file:
-            elem_file.write(elem.screenshot_as_png)
+        try:
+            with open(name_, "wb") as elem_file:
+                elem_file.write(elem.screenshot_as_png)
+        except:
+            print(f'Не могу получить капчу')
+            return False
 
         return name_
 
