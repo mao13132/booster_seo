@@ -113,7 +113,7 @@ class NewCaptcha:
             foo.save(name_file, quality=95)
         except Exception as es:
 
-            SendlerOneCreate('').save_text(f'Ошибка при конвертирование капчи "{es}"')
+            print(f'Ошибка при конвертирование капчи "{es}"')
 
             return False
 
@@ -136,10 +136,14 @@ class NewCaptcha:
 
     def load_image_to_base64(self, name_file):
 
-        with open(name_file, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read())
+        try:
 
-            encoded_string = encoded_string.decode('utf-8')
+            with open(name_file, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read())
+
+                encoded_string = encoded_string.decode('utf-8')
+        except:
+            return False
 
         return encoded_string
 
@@ -165,29 +169,60 @@ class NewCaptcha:
 
         return link_img_captcha
 
-    def get_image_captcha(self):
+    def loop_get_image_captcha(self, xpatch_, name_file):
+        count = 0
+        count_try = 5
+        while True:
+            count += 1
+            if count > count_try:
+                SendlerOneCreate('').save_text(f'BoosterSeo: исчерпал попытки получить главную капчу')
+                return False
 
-        elem = self._get_image_captcha('ImageWrapper')
+            elem = self._get_image_captcha(xpatch_)
 
-        name_image_two_job = self.save_image_elem(elem, 'image_captcha')
+            if not elem:
+                continue
 
-        name_image_two_job = self.resize_image(name_image_two_job)
+            name_image_two_job = self.save_image_elem(elem, name_file)
 
-        file_base64 = self.load_image_to_base64(name_image_two_job)
+            if not name_image_two_job:
+                continue
 
-        return file_base64
+            name_image_two_job = self.resize_image(name_image_two_job)
 
-    def get_image_two_job(self):
+            if not name_image_two_job:
+                continue
 
-        elem = self._get_image_captcha('SilhouetteTask')
+            file_base64 = self.load_image_to_base64(name_image_two_job)
 
-        name_image_two_job = self.save_image_elem(elem, 'image_two_job')
+            if not file_base64:
+                continue
 
-        name_image_two_job = self.crop_image(name_image_two_job)
+            return file_base64
 
-        file_base64 = self.load_image_to_base64(name_image_two_job)
-
-        return file_base64
+    # def get_image_captcha(self):
+    #
+    #     elem = self._get_image_captcha('ImageWrapper')
+    #
+    #     name_image_two_job = self.save_image_elem(elem, 'image_captcha')
+    #
+    #     name_image_two_job = self.resize_image(name_image_two_job)
+    #
+    #     file_base64 = self.load_image_to_base64(name_image_two_job)
+    #
+    #     return file_base64
+    #
+    # def get_image_two_job(self):
+    #
+    #     elem = self._get_image_captcha('SilhouetteTask')
+    #
+    #     name_image_two_job = self.save_image_elem(elem, 'image_two_job')
+    #
+    #     name_image_two_job = self.crop_image(name_image_two_job)
+    #
+    #     file_base64 = self.load_image_to_base64(name_image_two_job)
+    #
+    #     return file_base64
 
     def loop_check_good_code(self, code):
 
@@ -283,9 +318,11 @@ class NewCaptcha:
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Captcha Checker: распознаю изображение')
 
-        image_link = self.get_image_captcha()
+        image_link = self.loop_get_image_captcha('ImageWrapper', 'image_captcha')
+        # image_link = self.get_image_captcha()
 
-        image_two_job = self.get_image_two_job()
+        # image_two_job = self.get_image_two_job()
+        image_two_job = self.loop_get_image_captcha('SilhouetteTask', 'image_two_job')
 
         res_captcha = self.send_captcha(image_link, image_two_job)
 

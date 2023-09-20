@@ -1,3 +1,6 @@
+import time
+from datetime import datetime
+
 from src.booster.unpacked_request import unpacked_request
 
 
@@ -52,8 +55,19 @@ class GetRequests:
         return good_list
 
     def get_job_requests(self):
-        list_requests = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:I{self.count_rows}')
 
-        job_requests_list = self.calculate_request(list_requests)
+        for _try in range(3):
 
-        return job_requests_list
+            list_requests = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:I{self.count_rows}')
+
+            if not list_requests:
+                time.sleep(5)
+                continue
+
+            job_requests_list = self.calculate_request(list_requests)
+
+            return job_requests_list
+
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: кончились попытки получить запросы')
+
+        return False

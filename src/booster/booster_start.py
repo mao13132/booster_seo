@@ -15,7 +15,7 @@ class BoosterStart:
     def booster_start(self):
         list_requests = GetRequests(self.google_alternate).get_job_requests()
 
-        if list_requests == []:
+        if list_requests == [] or not list_requests:
             SendlerOneCreate('').save_text(f'BoosterSeo: Список запросов пуст')
             return []
 

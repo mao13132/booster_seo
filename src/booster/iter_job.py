@@ -1,7 +1,9 @@
+import time
 from datetime import datetime
 
 from settings import NAME_SERVER, MAX_CLICK_ONE_ACCOUNT
 from src.altastroy.choice_shab import CoiceShab
+from src.booster.search_old_request import search_last_date
 
 from src.browser.createbrowser import CreatBrowser
 from src.google.google_core import ConnectGoogleCore
@@ -57,7 +59,18 @@ class IterJob:
             res_write = self.google_alternate.new_write_in_cell(name_sheet, account_row, columns, over_status)
 
             if not res_write:
-                self.google_alternate = ConnectGoogleCore()
+
+                try:
+
+                    self.google_alternate = ConnectGoogleCore()
+
+                except Exception as es:
+                    print()
+
+                    SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Отлов ошибки: Ошибка при создания '
+                                                   f'переподключения "{es}"')
+
+                    time.sleep(10)
 
                 continue
 
@@ -102,7 +115,14 @@ class IterJob:
     def _iter_requests(self):
         """Итерирую полученные запросы, выбираю браузерный профиль и создаю браузер"""
 
-        for _request in self.list_requests:
+        start_ind = search_last_date(self.list_requests)
+
+        if start_ind == 0:
+            sort_requests = self.list_requests
+        else:
+            sort_requests = self.list_requests[start_ind + 1:] + self.list_requests[:start_ind + 1]
+
+        for _request in sort_requests:
 
             try:
 

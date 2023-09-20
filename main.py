@@ -17,6 +17,7 @@ def main():
 
     if not android_phone:
         return False
+    android_phone.start_reboot_ip()
 
     google_alternate = ConnectGoogleCore()
 

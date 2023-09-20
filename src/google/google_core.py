@@ -35,6 +35,7 @@ class ConnectGoogleCore:
                 worksheet.update_cell(row, columns, data_)
 
             except Exception as es:
+                print(f'Отлов ошибки write_in_cell "{es}"')
                 continue
 
             return True
@@ -55,7 +56,9 @@ class ConnectGoogleCore:
 
             worksheet.update_cell(row, columns, data_)
 
-        except:
+        except Exception as es:
+            print(f'Отлов ошибки new_write_in_cell "{es}"')
+
             return False
 
         return True
@@ -71,7 +74,7 @@ class ConnectGoogleCore:
                 worksheet.update(f'A{row}:F{row}', [data_])
 
             except Exception as es:
-                print(f'Ошибка "{es}"')
+                print(f'Отлов Ошибки "{es}"')
                 continue
 
             return True
@@ -90,7 +93,7 @@ class ConnectGoogleCore:
 
             worksheet = self.sheet.worksheet(name_sheet)
         except Exception as es:
-            # print(f'Ошибка при работе с google "{es}"')
+            print(f'Отлов Ошибка при работе с get_data_by_range "{es}"')
             return False
 
         return worksheet.get_values(range_)
