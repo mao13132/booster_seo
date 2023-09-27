@@ -2,7 +2,7 @@ import random
 import time
 from datetime import datetime, timedelta
 
-from settings import MAX_DAY_FARM
+from settings import MAX_DAY_FARM, NAME_SERVER
 from src.booster._booster_farm_acc import _BoosterFarmAcc
 from src.booster.get_profile import GetProfile
 from src.browser.createbrowser import CreatBrowser
@@ -26,7 +26,7 @@ class BoosterFarmAcc:
             count += 1
 
             if count > count_try:
-                print(f'BoosterSeo: Не смог получить список профилей для прогрева')
+                print(f'{NAME_SERVER} Booster Seo: Не смог получить список профилей для прогрева')
                 return False
 
             account_farm_list = GetProfile(self.google_alternate).get_account_farm()
@@ -79,12 +79,12 @@ class BoosterFarmAcc:
 
                 browser = self.start_profile(name_profile, user_aget)
 
-                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: начинаю прогрев "{name_profile}"')
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} Booster Seo: начинаю прогрев "{name_profile}"')
 
                 res_reg = _BoosterFarmAcc(self.google_alternate, self.dir_project, self.android_phone,
                                           browser.driver, status, login_password).start_farm(account_row)
 
-                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: закончил прогрев "{name_profile}"')
+                print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} Booster Seo: закончил прогрев "{name_profile}"')
 
 
             finally:
@@ -112,11 +112,11 @@ class BoosterFarmAcc:
 
         if list_account_farm == []:
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                  f'BoosterSeo: Запущен режим прогрева аккаунтов моложе {MAX_DAY_FARM} дней')
-            return True
+                  f'{NAME_SERVER} Booster Seo: нет аккаунтов моложе {MAX_DAY_FARM} дней')
+            return []
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Запущен режим прогрева аккаунтов моложе {MAX_DAY_FARM} дней')
+              f'{NAME_SERVER} Booster Seo: Запущен режим прогрева аккаунтов моложе {MAX_DAY_FARM} дней')
 
         res_iter = self.iter_farm(list_account_farm)
 

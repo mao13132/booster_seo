@@ -1,6 +1,7 @@
 import time
 from datetime import datetime
 
+from settings import NAME_SERVER
 from src.booster.unpacked_request import unpacked_request
 
 
@@ -68,6 +69,8 @@ class GetRequests:
 
             return job_requests_list
 
-        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: кончились попытки получить запросы')
+        print(
+            f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} '
+            f'Booster Seo: кончились попытки получить запросы')
 
         return False

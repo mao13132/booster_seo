@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 
+from settings import NAME_SERVER
 from src.android.android_core_one_step import android_core_one_step
 from src.android.rebook_ip import Reboot_ip
 from src.booster.booster_farm_acc import BoosterFarmAcc
@@ -17,7 +18,6 @@ def main():
 
     if not android_phone:
         return False
-    android_phone.start_reboot_ip()
 
     google_alternate = ConnectGoogleCore()
 
@@ -32,10 +32,10 @@ def main():
 
 
 if __name__ == '__main__':
-    print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: начал работу')
+    print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} Booster Seo: начал работу')
     try:
         main()
     except Exception as es:
-        SendlerOneCreate('').save_text(f'BoosterSeo: программа легла с ошибкой: "{es}"')
+        SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: программа легла с ошибкой: "{es}"')
 
-    print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: окончил работу')
+    print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} Booster Seo: окончил работу')

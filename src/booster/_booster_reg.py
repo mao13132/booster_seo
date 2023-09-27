@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
+from settings import NAME_SERVER
 from src.yandex.load_page import LoadPage
 from src.yandex.sms_activate_api import SmsActivateApi
 
@@ -29,7 +30,7 @@ class _BoosterReg:
             return True
         except:
             try:
-                print(f'BoosterSeo: Возможно спутана учетка старая и туда регаю новую')
+                print(f'{NAME_SERVER} Booster Seo: Возможно спутана учетка старая и туда регаю новую')
                 self.driver.find_elements(by=By.XPATH,
                                           value=f"//*[contains(@href, 'passport.yandex.ru/registration')]")[-1].click()
 
@@ -41,7 +42,7 @@ class _BoosterReg:
                 return True
 
             except Exception as es:
-                print(f'BoosterSeo: Ошибка при клике на кнопку ВОЙТИ {es}')
+                print(f'{NAME_SERVER} Booster Seo: Ошибка при клике на кнопку ВОЙТИ {es}')
                 return False
 
     def check_load_page_register(self):
@@ -50,7 +51,7 @@ class _BoosterReg:
                 EC.presence_of_element_located((By.XPATH, f'//*[contains(@for, "phone")]')))
             return True
         except:
-            print(f'BoosterSeo: Ошибка при загрузке страницы регистрации')
+            print(f'{NAME_SERVER} Booster Seo: Ошибка при загрузке страницы регистрации')
             return False
 
     def insert_name(self):
@@ -63,7 +64,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: Ошибка при написание имени при регистрации {es}')
+                print(f'{NAME_SERVER} Booster Seo: Ошибка при написание имени при регистрации {es}')
                 return False
 
         return True
@@ -77,7 +78,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: ошибка при написание фамилии при регистрации {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при написание фамилии при регистрации {es}')
                 return False
 
         return True
@@ -91,7 +92,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: ошибка при написание пароля при регистрации {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при написание пароля при регистрации {es}')
                 return False
 
         return True
@@ -106,7 +107,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: ошибка при написание 2 пароля при регистрации {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при написание 2 пароля при регистрации {es}')
                 return False
 
         return True
@@ -141,7 +142,7 @@ class _BoosterReg:
                 self.driver.find_element(by=By.XPATH,
                                          value=f'//*[contains(@class, "form")]//*[contains(text(), "огин")]').click()
             except Exception as es:
-                print(f'BoosterSeo: ошибка при клике на логин {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при клике на логин {es}')
                 return False
 
         time.sleep(3)
@@ -151,7 +152,7 @@ class _BoosterReg:
             list_login = self.driver.find_elements(by=By.XPATH,
                                                    value=f'//*[contains(@class, "list")]//*[contains(@class, "option")]')
         except:
-            # print(f'BoosterSeo: Не смог получить список логинов')
+            # print(f'{NAME_SERVER} Booster Seo: Не смог получить список логинов')
             pass
         try:
             _count_click_login = random.randint(1, 3)
@@ -171,7 +172,7 @@ class _BoosterReg:
                 ses[count].click()
 
             except:
-                # print(f'BoosterSeo: yandex не предложил логинов')
+                # print(f'{NAME_SERVER} Booster Seo: yandex не предложил логинов')
 
                 return False
 
@@ -187,7 +188,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: ошибка при написание сгенерированного логина {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при написание сгенерированного логина {es}')
                 return False
 
         return True
@@ -197,17 +198,17 @@ class _BoosterReg:
 
             login_account = self.driver.find_element(by=By.XPATH, value=f'//input[@id="login"]').get_attribute('value')
 
-            print(f'BoosterSeo: логин: {login_account}')
+            print(f'{NAME_SERVER} Booster Seo: логин: {login_account}')
 
         except:
-            print(f'BoosterSeo: Ошибка при получение данных о логине')
+            print(f'{NAME_SERVER} Booster Seo: Ошибка при получение данных о логине')
             return False
 
         return login_account
 
     def write_phone(self, phone):
 
-        print(f'BoosterSeo: Входящий номер {phone}')
+        print(f'{NAME_SERVER} Booster Seo: Входящий номер {phone}')
 
         try:
 
@@ -226,7 +227,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: ошибка при написание номера телефона {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при написание номера телефона {es}')
                 return False
 
         return True
@@ -272,7 +273,7 @@ class _BoosterReg:
             _count += 1
 
             if _count == 31:
-                print(f'BoosterSeo: Не дождался смс - отправил отмену номера. Сбрасываю попытку')
+                print(f'{NAME_SERVER} Booster Seo: Не дождался смс - отправил отмену номера. Сбрасываю попытку')
                 return False
 
             try:
@@ -287,7 +288,7 @@ class _BoosterReg:
                 _status_out = _status_out.replace('-', '')
                 return _status_out
 
-            print(f'BoosterSeo: #{_count} попытка получения смс')
+            print(f'{NAME_SERVER} Booster Seo: #{_count} попытка получения смс')
 
             time.sleep(5)
 
@@ -298,7 +299,7 @@ class _BoosterReg:
                     (By.XPATH, f'//*[contains(@data-t, "registration")]//button[contains(@class, action)]')))
             return True
         except:
-            print(f'BoosterSeo: Ошибка при загрузке страницы с кнопкой "зарегистрироваться"')
+            print(f'{NAME_SERVER} Booster Seo: Ошибка при загрузке страницы с кнопкой "зарегистрироваться"')
             return False
 
     def click_over_registration_button(self):
@@ -306,7 +307,7 @@ class _BoosterReg:
             self.driver.find_element(by=By.XPATH,
                                      value=f'//*[contains(@data-t, "registration")]//button[contains(@class, action)]').click()
         except:
-            print(f'BoosterSeo: Ошибка при клики на кнопку "Зарегестрироваться"')
+            print(f'{NAME_SERVER} Booster Seo: Ошибка при клики на кнопку "Зарегестрироваться"')
             return False
 
         return True
@@ -317,7 +318,7 @@ class _BoosterReg:
                 EC.presence_of_element_located((By.XPATH, f'//*[contains(text(), "аккаунт готов")]')))
             return True
         except:
-            print(f'BoosterSeo: Ошибка при загрузке последней страницы регистрации')
+            print(f'{NAME_SERVER} Booster Seo: Ошибка при загрузке последней страницы регистрации')
             return False
 
     def click_propustit(self):
@@ -339,7 +340,7 @@ class _BoosterReg:
                 time.sleep(random.choices(self._count_tile_wait)[0])
 
             except Exception as es:
-                print(f'BoosterSeo: ошибка при написание sms ответ {es}')
+                print(f'{NAME_SERVER} Booster Seo: ошибка при написание sms ответ {es}')
                 return False
 
         return True
@@ -372,7 +373,7 @@ class _BoosterReg:
             res_click = self.click_login()
 
             if not res_click:
-                # print(f'BoosterSeo: Не подтверждаю выбор логина, генерирую свой')
+                # print(f'{NAME_SERVER} Booster Seo: Не подтверждаю выбор логина, генерирую свой')
                 self.insert_generation_login()
 
             _login = self.get_save_login()
@@ -402,7 +403,7 @@ class _BoosterReg:
         if not res_load_reg:
             return False
 
-        print(f'BoosterSeo: вписываю данные аккаунта')
+        print(f'{NAME_SERVER} Booster Seo: вписываю данные аккаунта')
 
         res_insert = self.insert_data_account_to_form()
 
@@ -415,6 +416,9 @@ class _BoosterReg:
 
         phone = self.smscore.get_number('ya', 'any')
 
+        if phone == 'NO_BALANCE':
+            return 'NO_BALANCE'
+
         if not phone:
             return False
 
@@ -425,21 +429,21 @@ class _BoosterReg:
         self.response_write_phone = self.write_phone(self.number_phone)
 
         if not self.response_write_phone:
-            print(f'BoosterSeo: Не смог написать номер - Отменяю смс')
+            print(f'{NAME_SERVER} Booster Seo: Не смог написать номер - Отменяю смс')
             self.smscore.set_status(self.number_id, 8)
             return False
 
         if not self._check_write_phone():
-            print(f'BoosterSeo: Не могу подтвердить написание номера')
+            print(f'{NAME_SERVER} Booster Seo: Не могу подтвердить написание номера')
             self.smscore.set_status(self.number_id, 8)
             return False
 
         if not self.clicker_send_sms_button():
-            print(f'BoosterSeo: Не смог нажать на кнопку отправить смс')
+            print(f'{NAME_SERVER} Booster Seo: Не смог нажать на кнопку отправить смс')
             self.smscore.set_status(self.number_id, 8)
             return False
 
-        print(f'BoosterSeo: Отправляю запрос о том что смс была отправлена')
+        print(f'{NAME_SERVER} Booster Seo: Отправляю запрос о том что смс была отправлена')
 
         self.smscore.set_status(self.number_id, 1)
 
@@ -449,10 +453,10 @@ class _BoosterReg:
             self.smscore.set_status(self.number_id, 8)
             return False
 
-        print(f'BoosterSeo: Получил смс {response_sms_code}')
+        print(f'{NAME_SERVER} Booster Seo: Получил смс {response_sms_code}')
 
         if not self.write_sms_code(response_sms_code):
-            print(f'BoosterSeo: Не смог написать смс ответ регистрации yandex')
+            print(f'{NAME_SERVER} Booster Seo: Не смог написать смс ответ регистрации yandex')
             return False
 
         time.sleep(1)
@@ -472,6 +476,6 @@ class _BoosterReg:
 
         self.write_data_to_google_sheet(last_good_row)
 
-        print(f'BoosterSeo: Успешно зарегистрировал аккаунт {self.data_user["name_profile"]}')
+        print(f'{NAME_SERVER} Booster Seo: Успешно зарегистрировал аккаунт {self.data_user["name_profile"]}')
 
         return True

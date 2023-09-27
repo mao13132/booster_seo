@@ -12,7 +12,7 @@ import math
 
 from twocaptcha import TwoCaptcha
 
-from settings import CAPTCHA_TOKEN
+from settings import CAPTCHA_TOKEN, NAME_SERVER
 from src.telegram_debug import SendlerOneCreate
 from src.yandex.stoper import Stoper
 
@@ -164,10 +164,19 @@ class NewCaptcha:
         try:
             link_img_captcha = self.driver.find_element(by=By.XPATH,
                                                         value=f"//*[contains(@class, '{xpatch}')]/img")
-        except:
-            return False
 
-        return link_img_captcha
+            return link_img_captcha
+        except:
+            pass
+
+        try:
+            link_img_captcha = self.driver.find_element(by=By.XPATH,
+                                                        value=f"//*[contains(@class, '{xpatch}')]/canvas")
+            return link_img_captcha
+        except:
+            pass
+
+        return False
 
     def loop_get_image_captcha(self, xpatch_, name_file):
         count = 0
@@ -175,54 +184,34 @@ class NewCaptcha:
         while True:
             count += 1
             if count > count_try:
-                SendlerOneCreate('').save_text(f'BoosterSeo: исчерпал попытки получить главную капчу')
+                print(f'{NAME_SERVER} Booster Seo: исчерпал попытки получить {xpatch_} капчу')
                 return False
 
             elem = self._get_image_captcha(xpatch_)
 
             if not elem:
+                time.sleep(5)
                 continue
 
             name_image_two_job = self.save_image_elem(elem, name_file)
 
             if not name_image_two_job:
+                time.sleep(5)
                 continue
 
             name_image_two_job = self.resize_image(name_image_two_job)
 
             if not name_image_two_job:
+                time.sleep(5)
                 continue
 
             file_base64 = self.load_image_to_base64(name_image_two_job)
 
             if not file_base64:
+                time.sleep(5)
                 continue
 
             return file_base64
-
-    # def get_image_captcha(self):
-    #
-    #     elem = self._get_image_captcha('ImageWrapper')
-    #
-    #     name_image_two_job = self.save_image_elem(elem, 'image_captcha')
-    #
-    #     name_image_two_job = self.resize_image(name_image_two_job)
-    #
-    #     file_base64 = self.load_image_to_base64(name_image_two_job)
-    #
-    #     return file_base64
-    #
-    # def get_image_two_job(self):
-    #
-    #     elem = self._get_image_captcha('SilhouetteTask')
-    #
-    #     name_image_two_job = self.save_image_elem(elem, 'image_two_job')
-    #
-    #     name_image_two_job = self.crop_image(name_image_two_job)
-    #
-    #     file_base64 = self.load_image_to_base64(name_image_two_job)
-    #
-    #     return file_base64
 
     def loop_check_good_code(self, code):
 
@@ -319,10 +308,14 @@ class NewCaptcha:
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Captcha Checker: распознаю изображение')
 
         image_link = self.loop_get_image_captcha('ImageWrapper', 'image_captcha')
-        # image_link = self.get_image_captcha()
 
-        # image_two_job = self.get_image_two_job()
+        if not image_link:
+            return False
+
         image_two_job = self.loop_get_image_captcha('SilhouetteTask', 'image_two_job')
+
+        if not image_two_job:
+            return False
 
         res_captcha = self.send_captcha(image_link, image_two_job)
 
@@ -370,8 +363,8 @@ class NewCaptcha:
                 time.sleep(1)
                 continue
 
-        SendlerOneCreate('').save_text(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                                       f'Captcha Checker: Все попытки по получению капчи исчерпаны')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+              f'Captcha Checker: Все попытки по получению капчи исчерпаны')
 
         return False
 

@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
+from settings import NAME_SERVER
 from src.telegram_debug import SendlerOneCreate
 from src.yandex.load_page import LoadPage
 from src.yandex.stoper import Stoper
@@ -22,7 +23,7 @@ class YandexFarmSearch:
     def __init__(self, driver, name_profile, target_request, dir_project, google_alternate, _request):
         self.driver = driver
 
-        self.msg = f'BoosterSeo: "{name_profile}"'
+        self.msg = f'{NAME_SERVER} Booster Seo: "{name_profile}"'
 
         self.url = 'https://yandex.ru/search'
 
@@ -46,7 +47,7 @@ class YandexFarmSearch:
             count += 1
 
             if count > self.count_try:
-                SendlerOneCreate('').save_text(f'Израсходовал все попытки ввести запрос "{self.target_request}"')
+                print(f'Израсходовал все попытки ввести запрос "{self.target_request}"')
                 return False
 
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '

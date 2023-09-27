@@ -51,7 +51,7 @@ class IterJob:
             count += 1
 
             if count > count_try:
-                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: Не смог записать в столбец {columns} '
                                                f'в строчку "{account_row}" iter_job')
 
                 return False
@@ -67,7 +67,7 @@ class IterJob:
                 except Exception as es:
                     print()
 
-                    SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Отлов ошибки: Ошибка при создания '
+                    SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: Отлов ошибки: Ошибка при создания '
                                                    f'переподключения "{es}"')
 
                     time.sleep(10)

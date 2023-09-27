@@ -124,7 +124,7 @@ class YandexLoopPage:
             count += 1
 
             if count > count_try:
-                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} {NAME_SERVER} Booster Seo: Не смог записать в столбец {columns} '
                                                f'в строчку "{account_row}" yandex_loop_page')
 
                 return False
@@ -186,7 +186,7 @@ class YandexLoopPage:
                     continue
 
                 print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                      f'BoosterSeo: Найден целевой сайт по запросу: "{self.target_request}" на {count_page_} '
+                      f'{NAME_SERVER} Booster Seo: Найден целевой сайт по запросу: "{self.target_request}" на {count_page_} '
                       f'страницы и {count_row_} строке')
 
                 res_write = self.write_new_value_sheet(count_page_, count_row_)
@@ -270,7 +270,7 @@ class YandexLoopPage:
                 return job_link
 
             print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                  f'BoosterSeo: Целевой сайт на странице {count_page_} не обнаружен')
+                  f'{NAME_SERVER} Booster Seo: Целевой сайт на странице {count_page_} не обнаружен')
 
             # Вычисляю сколько мне надо крутить в низ страницу
             count_scroll = len(list_rows) // 2

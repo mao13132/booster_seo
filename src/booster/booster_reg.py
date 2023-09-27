@@ -2,7 +2,7 @@ import random
 import time
 from datetime import datetime
 
-from settings import MAX_REGISTRATION_ACCOUNT
+from settings import MAX_REGISTRATION_ACCOUNT, NAME_SERVER
 from src.booster._booster_reg import _BoosterReg
 from src.booster.get_profile import GetProfile
 from src.browser.createbrowser import CreatBrowser
@@ -66,8 +66,8 @@ class BoosterReg:
             count += 1
 
             if count > count_try:
-                print(f'BoosterSeo: Не смог получить последнюю строчку профилей')
-                return False
+                # print(f'{NAME_SERVER} Booster Seo: Не смог получить последнюю строчку профилей')
+                return 2
 
             count_zero = GetProfile(self.google_alternate).get_last_row_profile()
 
@@ -93,7 +93,7 @@ class BoosterReg:
                 count_zero = GetProfile(self.google_alternate).get_count_zero_profile()
 
                 if count_zero >= MAX_REGISTRATION_ACCOUNT:
-                    print(f'BoosterSeo: Зарегистрировано максимальное кол-во аккаунтов ({MAX_REGISTRATION_ACCOUNT})')
+                    print(f'{NAME_SERVER} Booster Seo: Зарегистрировано максимальное кол-во аккаунтов ({MAX_REGISTRATION_ACCOUNT})')
                     return True
 
                 data_user = self.generate_data_new_user()
@@ -104,6 +104,9 @@ class BoosterReg:
 
                 res_reg = _BoosterReg(self.google_alternate, self.dir_project, self.android_phone,
                                       browser.driver, data_user).start_reg(last_good_row)
+
+                if res_reg == 'NO_BALANCE':
+                    return 'NO_BALANCE'
 
 
             finally:
@@ -121,13 +124,12 @@ class BoosterReg:
 
                         print(f'Не смог перезагрузить прокси reg')
 
-
         return True
 
     def start_reg(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Запущен режим регистрации аккаунтов')
+              f'{NAME_SERVER} Booster Seo: Запущен режим регистрации аккаунтов')
 
         res_iter = self.iter_reg()
 

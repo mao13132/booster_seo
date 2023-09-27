@@ -79,7 +79,7 @@ class ConnectGoogleCore:
 
             return True
 
-        msg = f'{NAME_SERVER} Исчерпал все попытки google_core write_in_range_account ""'
+        msg = f'{NAME_SERVER} Booster Seo: Исчерпал все попытки google_core write_in_range_account ""'
 
         print(msg)
 
@@ -88,12 +88,19 @@ class ConnectGoogleCore:
         return False
 
     def get_data_by_range(self, name_sheet, range_):
+        for _try in range(4):
+            try:
+                worksheet = self.sheet.worksheet(name_sheet)
+            except:
+                time.sleep(5)
+                continue
 
-        try:
+            return worksheet.get_values(range_)
 
-            worksheet = self.sheet.worksheet(name_sheet)
-        except Exception as es:
-            print(f'Отлов Ошибка при работе с get_data_by_range "{es}"')
-            return False
+        print(f'Все попытки get_data_by_range кончились')
 
-        return worksheet.get_values(range_)
+        msg = f'{NAME_SERVER} Booster Seo: все попытки get_data_by_range кончились'
+
+        SendlerOneCreate('').save_text(msg)
+
+        return False

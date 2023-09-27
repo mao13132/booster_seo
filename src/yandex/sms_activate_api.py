@@ -1,7 +1,8 @@
 import asyncio
 from smsactivate.api import SMSActivateAPI
 
-from settings import SMS_TOKEN
+from settings import SMS_TOKEN, NAME_SERVER
+from src.telegram_debug import SendlerOneCreate
 
 
 class SmsActivateApi:
@@ -31,11 +32,18 @@ class SmsActivateApi:
             self.number_phone = self.number['phoneNumber']
             self.number_id = self.number['activationId']
         except:
-
             try:
-                print(f'Ошибка при получения номера: {self.number["error"]}')
-            except:
-                pass
+                _error_msg = self.number["error"]
+            except Exception as es:
+                print(f'{NAME_SERVER} Booster Seo: Ошибка при разборе ответа при полечение номера "{es}"')
+
+            if _error_msg == 'NO_BALANCE':
+                SendlerOneCreate('').save_text(
+                    f'{NAME_SERVER} Booster Seo: Закончился баланс https://sms-activate.org/ru/buy')
+                return 'NO_BALANCE'
+
+            SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: '
+                                           f'Ошибка при получения номера: {self.number["error"]}')
 
             return False
 

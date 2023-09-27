@@ -36,7 +36,7 @@ class _BoosterFarmAcc:
 
     def one_farm(self):
 
-        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: запуск шаблона №1 для прогрева аккаунтов')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} Booster Seo: запуск шаблона №1 для прогрева аккаунтов')
 
         url = 'https://mail.yandex.ru'
 
@@ -51,7 +51,7 @@ class _BoosterFarmAcc:
 
     def two_farm(self):
 
-        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} BoosterSeo: запуск шаблона №2 для прогрева аккаунтов')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} Booster Seo: запуск шаблона №2 для прогрева аккаунтов')
 
         _req = YandexAccaunt.gen_request()
 
@@ -77,7 +77,7 @@ class _BoosterFarmAcc:
             count += 1
 
             if count > count_try:
-                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                SendlerOneCreate('').save_text(f' {NAME_SERVER} Booster Seo: Не смог записать в столбец {columns} '
                                                f'в строчку "{account_row}" farm')
 
                 return False

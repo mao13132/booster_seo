@@ -17,6 +17,11 @@ class Reboot_ip:
 
             self.d.unlock()
 
+            no_internet = self.check_no_internet()
+
+            if no_internet:
+                self.samolet()
+
             if count > 10:
                 print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                       f'Android: Прерываю попытки смены IP кончились попытки {count}')
@@ -44,6 +49,7 @@ class Reboot_ip:
         self.run_browser()
 
         respons = self.check_browser()
+
         if respons == False:
             return False
 
@@ -55,6 +61,7 @@ class Reboot_ip:
             return False
 
         respons = self.get_ip()
+
         if respons == False:
             return False
 
@@ -71,6 +78,8 @@ class Reboot_ip:
                 print(
                     f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: IP успешно изменён! Старый: {old_ip} новый: {self.ip}')
                 return True
+
+        return True
 
     def samolet(self):
         self.d.open_quick_settings()
@@ -90,6 +99,9 @@ class Reboot_ip:
         return True
 
     def run_browser(self):
+
+        self.d.keyevent('home')
+
         self.d.app_start('com.android.chrome', use_monkey=True)
         return True
 
@@ -97,12 +109,25 @@ class Reboot_ip:
         count = 0
         while self.d.xpath('//*[contains(@resource-id, '
                            '"com.android.chrome:id/url_bar")]').wait_gone(timeout=3.0):
+
             if count > 10:
                 print(
                     f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: Не могу дождаться запуска браузера - выход')
                 return False
             count += 1
             self.d.swipe_ext("down")
+            time.sleep(1)
+
+        return True
+
+    def check_no_internet(self):
+        count = 0
+        while self.d.xpath(f'//*[contains(@resource-id, "airplane")]').wait_gone(timeout=3.0):
+
+            if count > 2:
+                return False
+
+            count += 1
             time.sleep(1)
 
         return True
@@ -129,6 +154,13 @@ class Reboot_ip:
 
         while self.d.xpath('//*[@content-desc="Мой IP: "]').wait_gone(timeout=1):
 
+            if count > 2:
+                try:
+                    self.d.xpath('//*[@text="Мой IP: "]')
+                    return True
+                except:
+                    pass
+
             if count > 10:
                 print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
                       f'Android: не смог дождаться загрузку сайта для проверки IP')
@@ -147,9 +179,16 @@ class Reboot_ip:
 
             self.ip = self.d.xpath('//*[contains(@content-desc, "Мой IP:")]'
                                    '//following-sibling::android.view.View').get().attrib['content-desc']
-
             return True
-
         except:
+            pass
 
-            return False
+        try:
+
+            self.ip = self.d.xpath('//*[contains(@text, "Мой IP:")]'
+                                   '//following-sibling::android.widget.TextView').get().attrib['text']
+            return True
+        except:
+            pass
+
+        return False

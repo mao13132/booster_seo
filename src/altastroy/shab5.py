@@ -4,6 +4,7 @@ from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
+from settings import NAME_SERVER
 from src.yandex.scroll import Scroll
 
 
@@ -23,7 +24,7 @@ class Shab5:
     def click_review(self, value):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: кликаю на "{value}"')
+              f'{NAME_SERVER} Booster Seo: кликаю на "{value}"')
 
         try:
             list_buttons = self.driver.find_elements(by=By.XPATH,
@@ -41,7 +42,7 @@ class Shab5:
     def click_logo(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: кликаю на логотип')
+              f'{NAME_SERVER} Booster Seo: кликаю на логотип')
 
         try:
             list_buttons = self.driver.find_elements(by=By.XPATH,
@@ -59,7 +60,7 @@ class Shab5:
     def click_cabinet(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: кликаю на вход в кабинет')
+              f'{NAME_SERVER} Booster Seo: кликаю на вход в кабинет')
 
         try:
             self.driver.find_element(by=By.XPATH,
@@ -73,7 +74,7 @@ class Shab5:
     def click_phone_form(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: кликаю на обратный звонок')
+              f'{NAME_SERVER} Booster Seo: кликаю на обратный звонок')
 
         try:
             list_buttons = self.driver.find_elements(by=By.XPATH,
@@ -91,7 +92,7 @@ class Shab5:
     def click_buy(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: кликаю на купить')
+              f'{NAME_SERVER} Booster Seo: кликаю на купить')
 
         try:
             self.driver.find_elements(by=By.XPATH,
@@ -127,7 +128,7 @@ class Shab5:
     def start_shab(self):
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Зашёл на целевой сайт. Начинаю имитацию поведения человека по шаблону 5')
+              f'{NAME_SERVER} Booster Seo: Зашёл на целевой сайт. Начинаю имитацию поведения человека по шаблону 5')
 
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
@@ -144,7 +145,7 @@ class Shab5:
         _sec = random.choice(self.list_time)
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Засыпаю на {_sec} секунд(у)')
+              f'{NAME_SERVER} Booster Seo: Засыпаю на {_sec} секунд(у)')
 
         time.sleep(_sec)
 
@@ -153,7 +154,7 @@ class Shab5:
         _sec = random.choice(self.list_time)
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Засыпаю на {_sec} секунд(у)')
+              f'{NAME_SERVER} Booster Seo: Засыпаю на {_sec} секунд(у)')
 
         time.sleep(_sec)
 
@@ -174,7 +175,7 @@ class Shab5:
         _sec = random.choice(self.list_time)
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Засыпаю на {_sec} секунд(у)')
+              f'{NAME_SERVER} Booster Seo: Засыпаю на {_sec} секунд(у)')
 
         time.sleep(_sec)
 
@@ -187,6 +188,6 @@ class Shab5:
         time.sleep(_mic)
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-              f'BoosterSeo: Закончил обработку целевого сайта')
+              f'{NAME_SERVER} Booster Seo: Закончил обработку целевого сайта')
 
         return True

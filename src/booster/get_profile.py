@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 
 from settings import MAX_DAY_FARM, NAME_SERVER
@@ -31,7 +32,7 @@ class GetProfile:
             count += 1
 
             if count > count_try:
-                SendlerOneCreate('').save_text(f'{NAME_SERVER} BoosterSeo: Не смог записать в столбец {columns} '
+                SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: Не смог записать в столбец {columns} '
                                                f'в строчку "{account_row}" get_profile')
 
                 return False
@@ -95,11 +96,21 @@ class GetProfile:
         return good_list
 
     def get_profile(self):
-        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:F{self.count_rows}')
+        for _try in range(4):
 
-        job_list_profiles = self.get_active_profile(list_profiles)
+            list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:F{self.count_rows}')
 
-        return job_list_profiles
+            if not list_profiles:
+                time.sleep(2)
+                continue
+
+            job_list_profiles = self.get_active_profile(list_profiles)
+
+            return job_list_profiles
+
+        print(f'Все попытки получить профили исчерпаны get_profile')
+
+        return False
 
     def get_count_zero_profile(self):
 
@@ -138,6 +149,9 @@ class GetProfile:
 
         list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:F{self.count_rows}')
 
+        if list_profiles == []:
+            return []
+
         if not list_profiles:
             return False
 
@@ -168,7 +182,7 @@ class GetProfile:
                 else:
                     self.loop_write_in_cell(self.name_sheets_requests, count_row + 2, 4,
                                             'active')
-                    print(f'BoosterSeo: Перевёл аккаунт {_profile[0]} в active')
+                    print(f'{NAME_SERVER} Booster Seo: Перевёл аккаунт {_profile[0]} в active')
 
         return good_list
 
