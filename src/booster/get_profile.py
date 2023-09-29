@@ -50,11 +50,13 @@ class GetProfile:
 
         good_list = []
 
+        no_name_server = False
+
         for count, row in enumerate(list_profiles):
 
             try:
 
-                name_profile, user_agent, count_click, status, login_and_password, date_create = row
+                name_profile, user_agent, count_click, status, login_and_password, date_create, name_server = row
 
             except:
 
@@ -73,6 +75,9 @@ class GetProfile:
 
                 self.loop_write_in_cell(self.name_sheets_requests, count + 2, 4, 'Превышен лимит кликов')
 
+                continue
+
+            if name_server.lower() != NAME_SERVER.lower():
                 continue
 
             max_click = self.max_click_one_account - count_click
@@ -98,7 +103,7 @@ class GetProfile:
     def get_profile(self):
         for _try in range(4):
 
-            list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:F{self.count_rows}')
+            list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:G{self.count_rows}')
 
             if not list_profiles:
                 time.sleep(2)
@@ -114,7 +119,7 @@ class GetProfile:
 
     def get_count_zero_profile(self):
 
-        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:F{self.count_rows}')
+        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:J{self.count_rows}')
 
         count = 0
 
@@ -147,7 +152,7 @@ class GetProfile:
 
         good_list = []
 
-        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:F{self.count_rows}')
+        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:G{self.count_rows}')
 
         if list_profiles == []:
             return []
@@ -160,6 +165,11 @@ class GetProfile:
             status = _profile[3]
 
             date_account = _profile[5]
+
+            name_server = _profile[6]
+
+            if name_server != NAME_SERVER:
+                continue
 
             check_date = self.date_over_old_farm(date_account)
 

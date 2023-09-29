@@ -349,7 +349,7 @@ class _BoosterReg:
 
         _data = [self.data_user['name_profile'], self.data_user['user_agent'], 0, 0,
                  f"{self.data_user['login_account']};{self.data_user['password_account']}",
-                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"), NAME_SERVER]
 
         res_write = self.google_alternate.write_in_range_account('аккаунты', last_good_row, _data)
 

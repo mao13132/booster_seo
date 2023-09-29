@@ -8,7 +8,7 @@ load_dotenv(dotenv_path)
 
 MAX_CLICK_ONE_ACCOUNT = 5  # Максимальное кол-во кликов с 1 аккаунта
 
-MAX_REGISTRATION_ACCOUNT = 16  # Максимальный запас новых аккаунтов
+MAX_REGISTRATION_ACCOUNT = 10  # Максимальный запас новых аккаунтов
 
 MAX_COUNT_PAGE = 10  # Максимальная страница до которой ведётся поиск целевого сайта
 
@@ -24,9 +24,9 @@ PROXY_USER = 'admin'
 
 PROXY_PASS = '123123'
 
-API_KEY_GOOGLE = 'booster_seo.json'
+API_KEY_GOOGLE = '_booster_seo.json'
 
-NAME_SERVER = 'main_razrabotka'
+NAME_SERVER = 'server1'
 
 ID_SHEET = os.getenv('ID_SHEET')
 

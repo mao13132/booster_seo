@@ -2,6 +2,7 @@ import time
 from datetime import datetime
 
 from settings import NAME_SERVER
+from src.booster.loop_write_in_cell import LoopWriteInCell
 from src.booster.unpacked_request import unpacked_request
 
 
@@ -17,11 +18,13 @@ class GetRequests:
 
         good_list = []
 
+        no_name_server = False
+
         for count, row in enumerate(list_requests):
 
             try:
                 _request, target_count, complete_count, count_page, count_row, last_date, start_page, start_row, \
-                    start_date = unpacked_request(row)
+                    start_date, name_server = unpacked_request(row)
             except:
                 continue
 
@@ -36,6 +39,18 @@ class GetRequests:
 
             if _request in dooble_list:
                 continue
+
+            if name_server.lower() != NAME_SERVER.lower() and name_server != '':
+                continue
+
+            if name_server == '':
+                if no_name_server:
+                    time.sleep(3)
+
+                LoopWriteInCell(self.google_alternate) \
+                    .loop_write_in_cell(self.name_sheets_requests, count + 2, 10, NAME_SERVER)
+
+                no_name_server = True
 
             dooble_list.append(_request)
 
@@ -59,7 +74,7 @@ class GetRequests:
 
         for _try in range(3):
 
-            list_requests = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:I{self.count_rows}')
+            list_requests = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:J{self.count_rows}')
 
             if not list_requests:
                 time.sleep(5)

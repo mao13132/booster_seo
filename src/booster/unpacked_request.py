@@ -26,6 +26,8 @@ def unpacked_request(_req):
 
     start_date = ''
 
+    name_server = ''
+
     for count, _val in enumerate(_req):
         if _val == '':
             _val = 0
@@ -48,5 +50,12 @@ def unpacked_request(_req):
             start_row = _val
         elif count == 8:
             start_date = _val
+        elif count == 9:
 
-    return _request, target_count, complete_count, count_page, count_row, last_date, start_page, start_row, start_date
+            if _val == 0:
+                _val = ''
+
+            name_server = _val
+
+    return _request, target_count, complete_count, count_page, count_row, last_date, start_page, start_row, \
+        start_date, name_server

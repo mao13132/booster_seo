@@ -30,8 +30,9 @@ class Reboot_ip:
 
     def reboot_shab_1(self):
 
-        respons = self.shab_takeip()
-        if respons == False:
+        get_ip = self.shab_takeip()
+
+        if get_ip == False:
             return False
 
         self.samolet()
@@ -42,44 +43,49 @@ class Reboot_ip:
 
         self.samolet()
 
-        return self.shab_takeip(self.ip)
+        res_reboot = self.shab_takeip(get_ip)
+
+        return res_reboot
 
     def shab_takeip(self, old_ip=''):
 
-        self.run_browser()
+        # self.run_browser()
+        #
+        # respons = self.check_browser()
+        #
+        # if respons == False:
+        #     return False
+        #
+        # self.load_site('https://whoer.net/ru')
+        #
+        # respons = self.check_load_site()
+        #
+        # if respons == False:
+        #     return False
 
-        respons = self.check_browser()
+        # respons = self.get_ip()
+        #
+        # if respons == False:
+        #     return False
 
-        if respons == False:
-            return False
+        import stun
+        ip_ = stun.get_ip_info()[1]
 
-        self.load_site('https://whoer.net/ru')
+        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: текущий IP: {ip_}')
 
-        respons = self.check_load_site()
-
-        if respons == False:
-            return False
-
-        respons = self.get_ip()
-
-        if respons == False:
-            return False
-
-        print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: текущий IP: {self.ip}')
-
-        self.load_site('https://google.com', 1)
+        # self.load_site('https://google.com', 1)
 
         if not old_ip == '':
-            if old_ip == self.ip:
+            if old_ip == ip_:
                 print(
-                    f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: IP не сменился! Старый: {old_ip} новый: {self.ip}')
+                    f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: IP не сменился! Старый: {old_ip} новый: {ip_}')
                 return False
             else:
                 print(
-                    f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: IP успешно изменён! Старый: {old_ip} новый: {self.ip}')
+                    f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: IP успешно изменён! Старый: {old_ip} новый: {ip_}')
                 return True
 
-        return True
+        return ip_
 
     def samolet(self):
         self.d.open_quick_settings()

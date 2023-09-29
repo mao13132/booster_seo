@@ -2,6 +2,8 @@ import subprocess
 import time
 
 import uiautomator2 as u2
+
+from settings import NAME_SERVER
 from src.android.rebook_ip import *
 from src.telegram_debug import SendlerOneCreate
 
@@ -60,10 +62,12 @@ class Connect_phone:
 
         if not _screen:
             SendlerOneCreate('').save_text(
-                f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: Не смог сменить IP останавливаю')
+                f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                f'{NAME_SERVER} Android: Не смог сменить IP останавливаю')
         else:
 
             SendlerOneCreate('').send_file(
-                f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: Не смог сменить IP останавливаю', _screen)
+                f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {NAME_SERVER} '
+                f'Android: Не смог сменить IP останавливаю', _screen)
 
         return False

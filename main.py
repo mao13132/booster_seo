@@ -19,7 +19,11 @@ def main():
     if not android_phone:
         return False
 
+    # android_phone.start_reboot_ip()
+
     google_alternate = ConnectGoogleCore()
+
+    res_reg = BoosterReg(google_alternate, dir_project, android_phone).start_reg()
 
     res_booster = BoosterStart(google_alternate, dir_project, android_phone).booster_start()
 
@@ -27,8 +31,6 @@ def main():
         return False
 
     res_reg = BoosterFarmAcc(google_alternate, dir_project, android_phone).start_farm()
-
-    res_reg = BoosterReg(google_alternate, dir_project, android_phone).start_reg()
 
 
 if __name__ == '__main__':

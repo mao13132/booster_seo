@@ -71,7 +71,7 @@ class ConnectGoogleCore:
 
                 worksheet = self.sheet.worksheet(name_sheet)
 
-                worksheet.update(f'A{row}:F{row}', [data_])
+                worksheet.update(f'A{row}:G{row}', [data_])
 
             except Exception as es:
                 print(f'Отлов Ошибки "{es}"')

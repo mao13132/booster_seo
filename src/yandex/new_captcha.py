@@ -128,7 +128,7 @@ class NewCaptcha:
 
         except Exception as es:
 
-            SendlerOneCreate('').save_text(f'Ошибка при crop_image капчи "{es}"')
+            SendlerOneCreate('').save_text(f'{NAME_SERVER} Ошибка при crop_image капчи "{es}"')
 
             return False
 
@@ -231,7 +231,7 @@ class NewCaptcha:
 
             return result['request']
 
-        SendlerOneCreate('').save_text(f'Ошибка при получение ответ от капчи ')
+        SendlerOneCreate('').save_text(f'{NAME_SERVER} Ошибка при получение ответ от капчи ')
 
         return False
 
@@ -301,7 +301,7 @@ class NewCaptcha:
             self.solver = TwoCaptcha(CAPTCHA_TOKEN)
         except Exception as es:
 
-            SendlerOneCreate('').save_text(f'Captcha Checker: Ошибка при подключение "{es}"')
+            SendlerOneCreate('').save_text(f'{NAME_SERVER} Captcha Checker: Ошибка при подключение "{es}"')
 
             return False
 

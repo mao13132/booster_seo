@@ -66,7 +66,6 @@ class BoosterReg:
             count += 1
 
             if count > count_try:
-                # print(f'{NAME_SERVER} Booster Seo: Не смог получить последнюю строчку профилей')
                 return 2
 
             count_zero = GetProfile(self.google_alternate).get_last_row_profile()
