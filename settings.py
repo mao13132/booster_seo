@@ -26,7 +26,7 @@ PROXY_PASS = '123123'
 
 API_KEY_GOOGLE = '_booster_seo.json'
 
-NAME_SERVER = 'server1'
+NAME_SERVER = 'server2'
 
 ID_SHEET = os.getenv('ID_SHEET')
 

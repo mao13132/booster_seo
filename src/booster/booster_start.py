@@ -17,7 +17,7 @@ class BoosterStart:
         list_requests = GetRequests(self.google_alternate).get_job_requests()
 
         if list_requests == [] or not list_requests:
-            SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: Список запросов пуст')
+            SendlerOneCreate('').save_text(f'{NAME_SERVER} Booster Seo: Список запросов пуст. Засыпаю на 12 часов')
             return []
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
@@ -30,7 +30,7 @@ class BoosterStart:
 
         if list_profile == []:
             SendlerOneCreate('').save_text(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                                           f'{NAME_SERVER} Booster Seo: Нет профилей для работы')
+                                           f'{NAME_SERVER} Booster Seo: Нет профилей для работы. Засыпаю на 12 часов')
 
             return []
 

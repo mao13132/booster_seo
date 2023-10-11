@@ -49,27 +49,11 @@ class Reboot_ip:
 
     def shab_takeip(self, old_ip=''):
 
-        # self.run_browser()
-        #
-        # respons = self.check_browser()
-        #
-        # if respons == False:
-        #     return False
-        #
-        # self.load_site('https://whoer.net/ru')
-        #
-        # respons = self.check_load_site()
-        #
-        # if respons == False:
-        #     return False
-
-        # respons = self.get_ip()
-        #
-        # if respons == False:
-        #     return False
-
         import stun
         ip_ = stun.get_ip_info()[1]
+
+        if ip_ is None:
+            ip_ = old_ip
 
         print(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} Android: текущий IP: {ip_}')
 

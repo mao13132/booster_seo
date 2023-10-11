@@ -119,13 +119,18 @@ class GetProfile:
 
     def get_count_zero_profile(self):
 
-        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:J{self.count_rows}')
+        list_profiles = self.google_alternate.get_data_by_range(self.name_sheets_requests, f'A2:G{self.count_rows}')
 
         count = 0
 
         for _profile in list_profiles:
 
             status = _profile[3]
+
+            server_name = _profile[6]
+
+            if server_name.lower() != NAME_SERVER.lower():
+                continue
 
             if status.isdigit():
 
